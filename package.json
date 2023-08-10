@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "ncc build src/index.ts -m",
-    "start": "NODE_ENV=production node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/bot.js",
+    "dev": "DEBUG='grammy*' nodemon bot.ts",
     "clean": "rimraf dist"
   },
   "keywords": [],
@@ -14,11 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "telegraf": "^4.12.2"
+    "grammy": "^1.17.2"
   },
   "devDependencies": {
     "@types/node": "^20.4.9",
-    "@vercel/ncc": "^0.36.1",
     "eslint": "^8.46.0",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.1",
