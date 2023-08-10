@@ -1,6 +1,6 @@
 import "dotenv/config";
 import Redis from "ioredis";
-import { Bot } from "grammy";
+import { Bot, GrammyError, HttpError } from "grammy";
 import { limit } from "@grammyjs/ratelimiter";
 
 import { cat } from "@/commands/cat";
@@ -50,4 +50,21 @@ bot.use(weather);
 bot.use(cat);
 bot.use(dog);
 
-bot.start();
+bot.catch((err) => {
+  const ctx = err.ctx;
+  console.error(`Error while handling update ${ctx.update.update_id}:`);
+  const error = err.error;
+  if (error instanceof GrammyError) {
+    console.error("Error in request:", error.description);
+  } else if (error instanceof HttpError) {
+    console.error("Could not contact Telegram:", error);
+  } else {
+    console.error("Unknown error:", error);
+  }
+});
+
+bot.start({
+  onStart(botInfo) {
+    console.log(`Logged in as @${botInfo.username}`);
+  },
+});
