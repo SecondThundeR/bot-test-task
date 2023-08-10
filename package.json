@@ -2,26 +2,23 @@
   "name": "bot-test-task",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
-    "build": "tsc",
-    "start": "NODE_ENV=production node dist/bot.js",
-    "dev": "DEBUG='grammy*' nodemon bot.ts",
-    "clean": "rimraf dist"
+    "dev": "DEBUG='grammy*' tsnd --respawn --transpile-only -r tsconfig-paths/register src/bot.ts",
+    "start": "NODE_ENV=production node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/bot.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "dotenv": "^16.3.1",
-    "grammy": "^1.17.2"
+    "grammy": "^1.17.2",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^20.4.9",
     "eslint": "^8.46.0",
-    "nodemon": "^3.0.1",
-    "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6"
   }
 }
