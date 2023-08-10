@@ -6,12 +6,13 @@
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
     "noImplicitAny": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "Node16",
     "sourceMap": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
-    "baseUrl": "./src",
-    "rootDir": "./"
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] },
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   }
 }
