@@ -23,7 +23,7 @@ weatherNotify.command("weathernotify", async (ctx) => {
   }
 
   const params = ctx.msg.text.split(" ");
-  if (params.length === 1) {
+  if (params.length < 2) {
     return ctx.reply(LOCALE.weather.subscribeHelp, {
       parse_mode: "MarkdownV2",
     });
@@ -36,6 +36,10 @@ weatherNotify.command("weathernotify", async (ctx) => {
     return ctx.reply(LOCALE.weather.incorrectSubscribeTime, {
       parse_mode: "MarkdownV2",
     });
+  }
+
+  if (!city) {
+    return ctx.reply(LOCALE.weather.noCity);
   }
 
   const weatherData = await getCurrentWeather(city);
