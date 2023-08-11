@@ -1,6 +1,6 @@
 import { Composer } from "grammy";
 
-import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
+import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
 
 export const weather = new Composer();
 

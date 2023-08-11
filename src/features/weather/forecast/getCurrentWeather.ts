@@ -1,7 +1,9 @@
 import axios from "axios";
 
 import { WEATHER_API_ENDPOINT } from "@/constants/endpoints";
+
 import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
+
 import { parseResponse } from "@/utils/zod/parseResponse";
 import { processError } from "@/utils/features/processError";
 
@@ -16,6 +18,9 @@ export async function getCurrentWeather(city: string) {
     });
     return await parseResponse(res.data, WeatherResponseSchema);
   } catch (error: unknown) {
-    processError(error, "Failed to find weather data in passed location");
+    return processError(
+      error,
+      "Failed to find weather data in passed location"
+    );
   }
 }
