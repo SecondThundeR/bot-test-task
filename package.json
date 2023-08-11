@@ -4,7 +4,7 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "dev": "DEBUG='grammy*' tsnd --respawn --transpile-only -r tsconfig-paths/register src/bot.ts",
+    "dev": "DEBUG='grammy*' tsnd --respawn --exit-child --transpile-only -r tsconfig-paths/register src/bot.ts",
     "start": "NODE_ENV=production node -r ts-node/register/transpile-only -r tsconfig-paths/register src/bot.ts"
   },
   "dependencies": {
