@@ -8,6 +8,11 @@ declare global {
       REDISPASSWORD: string;
       REDISPORT: string;
       REDISUSER: string;
+      PGDATABASE: string;
+      PGHOST: string;
+      PGPASSWORD: string;
+      PGPORT: string;
+      PGUSER: string;
       WEATHER_API_KEY: string;
       CAT_API_KEY: string;
       DOG_API_KEY: string;
