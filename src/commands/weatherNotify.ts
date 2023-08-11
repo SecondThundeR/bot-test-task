@@ -26,23 +26,15 @@ weatherNotify.command("weathernotify", async (ctx) => {
   const params = ctx.msg.text.split(" ");
   if (params.length === 1) {
     return ctx.reply(
-      "To get daily forecasts, use `/weatherNotify <city> <time>`\n\\(e\\.g\\. `/weatherNotify Moscow 12:00`\\)",
+      "To get daily forecasts, use `/weatherNotify <time> <city>`\n\\(e\\.g\\. `/weatherNotify 12:00 Moscow`\\)",
       {
         parse_mode: "MarkdownV2",
       }
     );
   }
 
-  const [weatherCity, time] = params.slice(1, 3);
-
-  const weatherData = await getCurrentWeather(weatherCity);
-  if (!weatherData) {
-    return ctx.reply("Failed to get weather data, as API returned nothing :c");
-  }
-
-  if (typeof weatherData === "string") {
-    return ctx.reply(weatherData);
-  }
+  const [time, ...weatherCity] = params.slice(1);
+  const city = weatherCity.join(" ");
 
   if (!checkTimeFormat(time)) {
     return ctx.reply(
@@ -53,10 +45,19 @@ weatherNotify.command("weathernotify", async (ctx) => {
     );
   }
 
-  await registerSubscriber(userID, weatherCity, time);
+  const weatherData = await getCurrentWeather(city);
+  if (!weatherData) {
+    return ctx.reply("Failed to get weather data, as API returned nothing :c");
+  }
+
+  if (typeof weatherData === "string") {
+    return ctx.reply(weatherData);
+  }
+
+  await registerSubscriber(userID, city, time);
 
   return ctx.reply(
-    `You have been subscribed successfully\\! You will recieve your daily forecasts for "${weatherCity}" at "${time}"`,
+    `You have been subscribed successfully\\! You will recieve your daily forecasts for "${city}" at "${time}"`,
     {
       parse_mode: "MarkdownV2",
     }

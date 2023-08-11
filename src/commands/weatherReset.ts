@@ -12,8 +12,7 @@ weatherReset.command("weatherreset", async (ctx) => {
     return ctx.reply("Can't get userID!");
   }
 
-  const isSubscribed = await checkWeatherSubscription(userID);
-  if (!isSubscribed) {
+  if (!checkWeatherSubscription(userID)) {
     return ctx.reply(
       "You aren't subscribed\\! Use `/weatherNotify` to set subscription",
       {
