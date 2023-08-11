@@ -1,6 +1,6 @@
 import { postgres } from "@/bot";
 
-import { setUserNotification } from "@/constants/postgresQueries";
+import { SET_WEATHER_NOTIFICATION } from "@/constants/postgresQueries";
 
 import { setSubscriptionData } from "@/store/weather/subscriptions";
 
@@ -9,6 +9,6 @@ export async function registerSubscriber(
   city: string,
   time: string
 ) {
-  await postgres.query(setUserNotification, [userID, city, time]);
+  await postgres.query(SET_WEATHER_NOTIFICATION, [userID, city, time]);
   setSubscriptionData(userID, city, time);
 }

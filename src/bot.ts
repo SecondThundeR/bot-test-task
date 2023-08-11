@@ -13,8 +13,11 @@ import { weather } from "@/commands/weather";
 import { weatherReset } from "@/commands/weatherReset";
 import { weatherNotify } from "@/commands/weatherNotify";
 
-import { commandsData } from "@/constants/commandsData";
-import { getUserNotifications, tableQuery } from "@/constants/postgresQueries";
+import { COMMANDS_DATA } from "@/constants/commandsData";
+import {
+  GET_WEATHER_NOTIFICATIONS,
+  TABLE_QUERY,
+} from "@/constants/postgresQueries";
 
 import { sendWeatherNotifications } from "@/features/weather/notify/sendWeatherNotifications";
 
@@ -56,7 +59,7 @@ export const postgres = new Client({
 const bot = new Bot(BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
-bot.api.setMyCommands(commandsData);
+bot.api.setMyCommands(COMMANDS_DATA);
 
 bot.use(
   limit({
@@ -98,9 +101,11 @@ bot.catch((err) => {
 bot.start({
   async onStart(botInfo) {
     await postgres.connect();
-    await postgres.query(tableQuery);
+    await postgres.query(TABLE_QUERY);
 
-    const dbWeatherSubscriptions = await postgres.query(getUserNotifications);
+    const dbWeatherSubscriptions = await postgres.query(
+      GET_WEATHER_NOTIFICATIONS
+    );
     initSubscriptionData(dbWeatherSubscriptions.rows);
 
     cron.schedule("* * * * *", async () => {

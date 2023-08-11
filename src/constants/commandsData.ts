@@ -1,6 +1,6 @@
 import { BotCommand } from "grammy/types";
 
-export const commandsData: BotCommand[] = [
+export const COMMANDS_DATA: BotCommand[] = [
   { command: "start", description: "Start the bot" },
   { command: "help", description: "Show help text" },
   { command: "weather", description: "Get weather data in city" },
