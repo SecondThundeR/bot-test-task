@@ -98,6 +98,15 @@ bot.catch((err) => {
   }
 });
 
+process.once("SIGINT", () => {
+  postgres.end();
+  bot.stop();
+});
+process.once("SIGTERM", () => {
+  postgres.end();
+  bot.stop();
+});
+
 bot.start({
   async onStart(botInfo) {
     await postgres.connect();
