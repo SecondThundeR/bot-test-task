@@ -3,6 +3,7 @@ import { Api, RawApi } from "grammy";
 import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
 
 import { subscriptions } from "@/store/weather/subscriptions";
+import { LOCALE } from "@/constants/locale";
 
 export async function sendWeatherNotifications(api: Api<RawApi>) {
   if (subscriptions.length === 0) return;
@@ -23,10 +24,11 @@ export async function sendWeatherNotifications(api: Api<RawApi>) {
       continue;
     }
 
+    const { name } = weatherData.location;
     const { condition, temp_c } = weatherData.current;
     await api.sendMessage(
       userID,
-      `*Daily forecast for ${city}*\nCondition: ${condition.text}\nTemperature: ${temp_c}°C`,
+      LOCALE.weather.result(name, condition.text, temp_c),
       {
         parse_mode: "MarkdownV2",
       }
