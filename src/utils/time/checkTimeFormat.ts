@@ -3,8 +3,8 @@ export function checkTimeFormat(time?: string) {
   const [hours, minutes] = time.split(":");
 
   if (!hours || !minutes) return false;
-  if (+hours < 0 || +hours > 24) return false;
-  if (+minutes < 0 || +minutes > 59) return false;
+  if (parseInt(hours) < 0 || parseInt(hours) > 24) return false;
+  if (parseInt(minutes) < 0 || parseInt(minutes) > 59) return false;
 
   return true;
 }
