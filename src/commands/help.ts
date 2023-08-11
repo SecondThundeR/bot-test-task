@@ -1,12 +1,7 @@
 import { Composer } from "grammy";
 
+import { LOCALE } from "@/constants/locale";
+
 export const help = new Composer();
 
-help.command("help", (ctx) =>
-  ctx.reply(
-    "This bot is used to get info about the weather in your city\\. To get info type `/weather <city>`",
-    {
-      parse_mode: "MarkdownV2",
-    }
-  )
-);
+help.command("help", (ctx) => ctx.reply(LOCALE.help));

@@ -1,9 +1,12 @@
 import axios from "axios";
 
 import { CAT_API_ENDPOINT } from "@/constants/endpoints";
+import { LOCALE } from "@/constants/locale";
+
 import { CatResponseSchema } from "@/schemas/cat/catSchema";
-import { parseResponse } from "@/utils/zod/parseResponse";
+
 import { processError } from "@/utils/features/processError";
+import { parseResponse } from "@/utils/zod/parseResponse";
 
 export async function getRandomCat() {
   try {
@@ -14,6 +17,6 @@ export async function getRandomCat() {
     });
     return await parseResponse(res.data, CatResponseSchema);
   } catch (error: unknown) {
-    processError(error, "Failed to fetch random cat!");
+    processError(error, LOCALE.cat.failedFetch);
   }
 }

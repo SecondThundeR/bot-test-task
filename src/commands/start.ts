@@ -1,9 +1,7 @@
 import { Composer } from "grammy";
 
+import { LOCALE } from "@/constants/locale";
+
 export const start = new Composer();
 
-start.command("start", (ctx) => {
-  ctx.reply("Welcome\\! To get more info about functionality, type `/help`", {
-    parse_mode: "MarkdownV2",
-  });
-});
+start.command("start", (ctx) => ctx.reply(LOCALE.start));

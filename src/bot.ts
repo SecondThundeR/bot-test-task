@@ -22,6 +22,7 @@ import {
 import { sendWeatherNotifications } from "@/features/weather/notify/sendWeatherNotifications";
 
 import { initSubscriptionData } from "@/store/weather/subscriptions";
+import { LOCALE } from "./constants/locale";
 
 const {
   BOT_TOKEN,
@@ -67,9 +68,7 @@ bot.use(
     limit: 3,
     storageClient: redis,
     onLimitExceeded: async (ctx) => {
-      await ctx.reply(
-        "You are sending too many requests! Please wait before sending new one"
-      );
+      await ctx.reply(LOCALE.general.hitRateLimit);
     },
     keyGenerator: (ctx) => {
       return ctx.from?.id.toString();

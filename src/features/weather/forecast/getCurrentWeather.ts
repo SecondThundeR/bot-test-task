@@ -1,11 +1,12 @@
 import axios from "axios";
 
 import { WEATHER_API_ENDPOINT } from "@/constants/endpoints";
+import { LOCALE } from "@/constants/locale";
 
 import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
 
-import { parseResponse } from "@/utils/zod/parseResponse";
 import { processError } from "@/utils/features/processError";
+import { parseResponse } from "@/utils/zod/parseResponse";
 
 export async function getCurrentWeather(city: string) {
   try {
@@ -18,9 +19,6 @@ export async function getCurrentWeather(city: string) {
     });
     return await parseResponse(res.data, WeatherResponseSchema);
   } catch (error: unknown) {
-    return processError(
-      error,
-      "Failed to find weather data in passed location"
-    );
+    return processError(error, LOCALE.weather.failedFetch);
   }
 }
