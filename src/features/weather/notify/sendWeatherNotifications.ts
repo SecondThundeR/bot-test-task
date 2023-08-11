@@ -8,26 +8,28 @@ export async function sendWeatherNotifications(api: Api<RawApi>) {
   if (subscriptions.length === 0) return;
   const currentDate = new Date();
 
-  subscriptions.map((notification) => {
-    const { userID, city, time } = notification;
+  for (let index = 0; index < subscriptions.length; index++) {
+    const { userID, city, time } = subscriptions[index];
     const [hours, minutes] = time.split(":");
     if (
-      +hours === currentDate.getHours() &&
-      +minutes === currentDate.getMinutes()
-    ) {
-      let messageText: string;
+      parseInt(hours) !== currentDate.getHours() ||
+      parseInt(minutes) !== currentDate.getMinutes()
+    )
+      continue;
 
-      getCurrentWeather(city).then((weatherData) => {
-        if (typeof weatherData === "string") {
-          messageText = weatherData;
-        } else {
-          const { condition, temp_c } = weatherData.current;
-          messageText = `*Daily forecast for ${city}*\nCondition: ${condition.text}\nTemperature: ${temp_c}°C`;
-        }
-        api.sendMessage(userID, messageText, {
-          parse_mode: "MarkdownV2",
-        });
-      });
+    const weatherData = await getCurrentWeather(city);
+    if (typeof weatherData === "string") {
+      await api.sendMessage(userID, weatherData);
+      continue;
     }
-  });
+
+    const { condition, temp_c } = weatherData.current;
+    await api.sendMessage(
+      userID,
+      `*Daily forecast for ${city}*\nCondition: ${condition.text}\nTemperature: ${temp_c}°C`,
+      {
+        parse_mode: "MarkdownV2",
+      }
+    );
+  }
 }
