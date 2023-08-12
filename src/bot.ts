@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { Bot } from "grammy";
 import { limit } from "@grammyjs/ratelimiter";
 import Redis from "ioredis";
@@ -6,18 +7,18 @@ import { Client } from "pg";
 
 import { cat } from "@/commands/cat";
 import { dog } from "@/commands/dog";
-import { start } from "@/commands/start";
 import { help } from "@/commands/help";
+import { start } from "@/commands/start";
 import { weather } from "@/commands/weather";
-import { weatherReset } from "@/commands/weatherReset";
 import { weatherNotify } from "@/commands/weatherNotify";
+import { weatherReset } from "@/commands/weatherReset";
 
 import { COMMANDS_DATA } from "@/constants/commandsData";
 import { LOCALE } from "@/constants/locale";
 
 import { errorHandler } from "@/handlers/bot/errorHandler";
-import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
 import { onStartHandler } from "@/handlers/bot/onStartHandler";
+import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
 
 const {
   BOT_TOKEN,
@@ -68,7 +69,7 @@ bot.use(
     keyGenerator: (ctx) => {
       return ctx.from?.id.toString();
     },
-  })
+  }),
 );
 
 pm.use(start);

@@ -7,5 +7,5 @@ import z from "zod";
 export const CatResponseSchema = z.array(
   z.object({
     url: z.string().url(),
-  })
+  }),
 );

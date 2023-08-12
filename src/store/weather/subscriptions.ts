@@ -13,7 +13,7 @@ export function initSubscriptionData(initSubscriptions: Subscription[]) {
 export function hasSubscriptionData(userID: number) {
   return (
     subscriptions.findIndex(
-      (subscription) => subscription.userID === userID
+      (subscription) => subscription.userID === userID,
     ) !== -1
   );
 }
@@ -25,13 +25,13 @@ export function getSubscriptionData(userID: number) {
 export function setSubscriptionData(
   userID: number,
   city: string,
-  time: string
+  time: string,
 ) {
   subscriptions.push({ userID, city, time });
 }
 
 export function deleteSubscriptionData(userID: number) {
   subscriptions = subscriptions.filter(
-    (subscription) => subscription.userID !== userID
+    (subscription) => subscription.userID !== userID,
   );
 }

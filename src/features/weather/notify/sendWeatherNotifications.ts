@@ -1,9 +1,10 @@
 import { Api, RawApi } from "grammy";
 
+import { LOCALE } from "@/constants/locale";
+
 import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
 
 import { subscriptions } from "@/store/weather/subscriptions";
-import { LOCALE } from "@/constants/locale";
 
 export async function sendWeatherNotifications(api: Api<RawApi>) {
   if (subscriptions.length === 0) return;
@@ -31,7 +32,7 @@ export async function sendWeatherNotifications(api: Api<RawApi>) {
       LOCALE.weather.result(name, condition.text, temp_c),
       {
         parse_mode: "MarkdownV2",
-      }
+      },
     );
   }
 }

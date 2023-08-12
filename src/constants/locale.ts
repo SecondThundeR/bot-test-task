@@ -1,7 +1,7 @@
 import { COMMANDS_DATA } from "./commandsData";
 
 const COMMANDS_LIST = COMMANDS_DATA.map(
-  (commandData) => `/${commandData.command} - ${commandData.description}`
+  (commandData) => `/${commandData.command} - ${commandData.description}`,
 );
 
 export const LOCALE = {

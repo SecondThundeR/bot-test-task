@@ -1,7 +1,7 @@
 import { Bot } from "grammy";
 import { UserFromGetMe } from "grammy/types";
-import { Client } from "pg";
 import cron from "node-cron";
+import { Client } from "pg";
 
 import {
   GET_WEATHER_NOTIFICATIONS,
@@ -15,13 +15,13 @@ import { initSubscriptionData } from "@/store/weather/subscriptions";
 export async function onStartHandler(
   bot: Bot,
   postgres: Client,
-  botInfo: UserFromGetMe
+  botInfo: UserFromGetMe,
 ) {
   await postgres.connect();
   await postgres.query(TABLE_QUERY);
 
   const dbWeatherSubscriptions = await postgres.query(
-    GET_WEATHER_NOTIFICATIONS
+    GET_WEATHER_NOTIFICATIONS,
   );
   initSubscriptionData(dbWeatherSubscriptions.rows);
 
