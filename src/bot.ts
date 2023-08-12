@@ -56,7 +56,21 @@ export const postgres = new Client({
 const bot = new Bot(BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
-bot.api.setMyCommands(COMMANDS_DATA).catch(console.error);
+bot.api
+  .setMyCommands(COMMANDS_DATA, {
+    scope: {
+      type: "all_private_chats",
+    },
+  })
+  .catch(console.error);
+
+bot.api
+  .setMyCommands([], {
+    scope: {
+      type: "all_group_chats",
+    },
+  })
+  .catch(console.error);
 
 bot.use(
   limit({
