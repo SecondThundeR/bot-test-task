@@ -1,9 +1,8 @@
 import "dotenv/config";
-import { Bot, GrammyError, HttpError } from "grammy";
+import { Bot } from "grammy";
 import { limit } from "@grammyjs/ratelimiter";
 import Redis from "ioredis";
 import { Client } from "pg";
-import cron from "node-cron";
 
 import { cat } from "@/commands/cat";
 import { dog } from "@/commands/dog";
@@ -14,15 +13,11 @@ import { weatherReset } from "@/commands/weatherReset";
 import { weatherNotify } from "@/commands/weatherNotify";
 
 import { COMMANDS_DATA } from "@/constants/commandsData";
-import {
-  GET_WEATHER_NOTIFICATIONS,
-  TABLE_QUERY,
-} from "@/constants/postgresQueries";
+import { LOCALE } from "@/constants/locale";
 
-import { sendWeatherNotifications } from "@/features/weather/notify/sendWeatherNotifications";
-
-import { initSubscriptionData } from "@/store/weather/subscriptions";
-import { LOCALE } from "./constants/locale";
+import { errorHandler } from "@/handlers/bot/errorHandler";
+import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
+import { onStartHandler } from "@/handlers/bot/onStartHandler";
 
 const {
   BOT_TOKEN,
@@ -84,42 +79,11 @@ pm.use(weatherReset);
 pm.use(cat);
 pm.use(dog);
 
-bot.catch((err) => {
-  const ctx = err.ctx;
-  console.error(`Error while handling update ${ctx.update.update_id}:`);
-  const error = err.error;
-  if (error instanceof GrammyError) {
-    console.error("Error in request:", error.description);
-  } else if (error instanceof HttpError) {
-    console.error("Could not contact Telegram:", error);
-  } else {
-    console.error("Unknown error:", error);
-  }
-});
+bot.catch((err) => errorHandler(err));
 
-process.once("SIGINT", () => {
-  postgres.end();
-  bot.stop();
-});
-process.once("SIGTERM", () => {
-  postgres.end();
-  bot.stop();
-});
+process.once("SIGINT", () => shutdownHandler(bot, postgres));
+process.once("SIGTERM", () => shutdownHandler(bot, postgres));
 
 bot.start({
-  async onStart(botInfo) {
-    await postgres.connect();
-    await postgres.query(TABLE_QUERY);
-
-    const dbWeatherSubscriptions = await postgres.query(
-      GET_WEATHER_NOTIFICATIONS
-    );
-    initSubscriptionData(dbWeatherSubscriptions.rows);
-
-    cron.schedule("* * * * *", async () => {
-      await sendWeatherNotifications(bot.api);
-    });
-
-    console.log(`Logged in as @${botInfo.username}`);
-  },
+  onStart: async (botInfo) => await onStartHandler(bot, postgres, botInfo),
 });
