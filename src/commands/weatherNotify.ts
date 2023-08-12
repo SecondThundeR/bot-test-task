@@ -5,7 +5,8 @@ import { LOCALE } from "@/constants/locale";
 import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
 import { registerSubscriber } from "@/features/weather/notify/registerSubscriber";
 
-import { checkWeatherSubscription } from "@/utils/features/checkWeatherSubscription";
+import { hasSubscriptionData } from "@/store/weather/subscriptions";
+
 import { checkTimeFormat } from "@/utils/time/checkTimeFormat";
 
 export const weatherNotify = new Composer();
@@ -16,7 +17,7 @@ weatherNotify.command("weathernotify", async (ctx) => {
     return ctx.reply(LOCALE.general.noUserID);
   }
 
-  if (checkWeatherSubscription(userID)) {
+  if (hasSubscriptionData(userID)) {
     return ctx.reply(LOCALE.weather.alreadySubscribed, {
       parse_mode: "MarkdownV2",
     });

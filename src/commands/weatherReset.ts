@@ -4,7 +4,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { removeSubscriber } from "@/features/weather/notify/removeSubscriber";
 
-import { checkWeatherSubscription } from "@/utils/features/checkWeatherSubscription";
+import { hasSubscriptionData } from "@/store/weather/subscriptions";
 
 export const weatherReset = new Composer();
 
@@ -14,7 +14,7 @@ weatherReset.command("weatherreset", async (ctx) => {
     return ctx.reply(LOCALE.general.noUserID);
   }
 
-  if (!checkWeatherSubscription(userID)) {
+  if (!hasSubscriptionData(userID)) {
     return ctx.reply(LOCALE.weather.notSubscribed, {
       parse_mode: "MarkdownV2",
     });
