@@ -23,8 +23,9 @@ const config = {
       2,
       {
         checksVoidReturn: {
+          arguments: false,
           attributes: false,
-          returns: false,
+          properties: false,
         },
       },
     ],

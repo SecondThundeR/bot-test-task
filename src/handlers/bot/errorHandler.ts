@@ -1,4 +1,4 @@
-import { BotError, Context, GrammyError, HttpError } from "grammy";
+import { type BotError, type Context, GrammyError, HttpError } from "grammy";
 
 export function errorHandler(err: BotError<Context>) {
   const ctx = err.ctx;

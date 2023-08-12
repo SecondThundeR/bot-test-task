@@ -56,7 +56,7 @@ export const postgres = new Client({
 const bot = new Bot(BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
-bot.api.setMyCommands(COMMANDS_DATA);
+bot.api.setMyCommands(COMMANDS_DATA).catch(console.error);
 
 bot.use(
   limit({
@@ -85,6 +85,8 @@ bot.catch((err) => errorHandler(err));
 process.once("SIGINT", () => shutdownHandler(bot, postgres));
 process.once("SIGTERM", () => shutdownHandler(bot, postgres));
 
-bot.start({
-  onStart: async (botInfo) => await onStartHandler(bot, postgres, botInfo),
-});
+bot
+  .start({
+    onStart: async (botInfo) => await onStartHandler(bot, postgres, botInfo),
+  })
+  .catch(console.error);

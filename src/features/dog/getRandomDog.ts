@@ -6,7 +6,6 @@ import { LOCALE } from "@/constants/locale";
 import { CatResponseSchema } from "@/schemas/cat/catSchema";
 
 import { processError } from "@/utils/features/processError";
-import { parseResponse } from "@/utils/zod/parseResponse";
 
 export async function getRandomDog() {
   try {
@@ -15,7 +14,7 @@ export async function getRandomDog() {
         "x-api-key": process.env.DOG_API_KEY,
       },
     });
-    return await parseResponse(res.data, CatResponseSchema);
+    return await CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     processError(error, LOCALE.dog.failedFetch);
   }

@@ -1,4 +1,4 @@
-import { Api, RawApi } from "grammy";
+import { type Api, type RawApi } from "grammy";
 
 import { LOCALE } from "@/constants/locale";
 
@@ -10,8 +10,8 @@ export async function sendWeatherNotifications(api: Api<RawApi>) {
   if (subscriptions.length === 0) return;
   const currentDate = new Date();
 
-  for (let index = 0; index < subscriptions.length; index++) {
-    const { userID, city, time } = subscriptions[index];
+  for (const subscription of subscriptions) {
+    const { userID, city, time } = subscription;
     const [hours, minutes] = time.split(":");
     if (
       parseInt(hours) !== currentDate.getHours() ||

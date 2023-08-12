@@ -1,4 +1,4 @@
-import { BotCommand } from "grammy/types";
+import { type BotCommand } from "grammy/types";
 
 export const COMMANDS_DATA: BotCommand[] = [
   { command: "start", description: "Start the bot" },

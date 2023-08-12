@@ -1,7 +1,7 @@
-import { Bot } from "grammy";
-import { UserFromGetMe } from "grammy/types";
+import { type Bot } from "grammy";
+import { type UserFromGetMe } from "grammy/types";
 import cron from "node-cron";
-import { Client } from "pg";
+import { type Client } from "pg";
 
 import {
   GET_WEATHER_NOTIFICATIONS,
@@ -10,7 +10,10 @@ import {
 
 import { sendWeatherNotifications } from "@/features/weather/notify/sendWeatherNotifications";
 
-import { initSubscriptionData } from "@/store/weather/subscriptions";
+import {
+  initSubscriptionData,
+  type Subscription,
+} from "@/store/weather/subscriptions";
 
 export async function onStartHandler(
   bot: Bot,
@@ -23,7 +26,7 @@ export async function onStartHandler(
   const dbWeatherSubscriptions = await postgres.query(
     GET_WEATHER_NOTIFICATIONS,
   );
-  initSubscriptionData(dbWeatherSubscriptions.rows);
+  initSubscriptionData(dbWeatherSubscriptions.rows as Subscription[]);
 
   cron.schedule("* * * * *", async () => {
     await sendWeatherNotifications(bot.api);

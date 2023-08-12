@@ -6,7 +6,6 @@ import { LOCALE } from "@/constants/locale";
 import { CatResponseSchema } from "@/schemas/cat/catSchema";
 
 import { processError } from "@/utils/features/processError";
-import { parseResponse } from "@/utils/zod/parseResponse";
 
 export async function getRandomCat() {
   try {
@@ -15,7 +14,7 @@ export async function getRandomCat() {
         "x-api-key": process.env.CAT_API_KEY,
       },
     });
-    return await parseResponse(res.data, CatResponseSchema);
+    return await CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     processError(error, LOCALE.cat.failedFetch);
   }

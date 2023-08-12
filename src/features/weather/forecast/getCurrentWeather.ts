@@ -6,7 +6,6 @@ import { LOCALE } from "@/constants/locale";
 import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
 
 import { processError } from "@/utils/features/processError";
-import { parseResponse } from "@/utils/zod/parseResponse";
 
 export async function getCurrentWeather(city: string) {
   try {
@@ -17,7 +16,7 @@ export async function getCurrentWeather(city: string) {
         aqi: "no",
       },
     });
-    return await parseResponse(res.data, WeatherResponseSchema);
+    return await WeatherResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     return processError(error, LOCALE.weather.failedFetch);
   }
