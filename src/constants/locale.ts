@@ -14,11 +14,11 @@ export const LOCALE = {
     result: (name: string, condition: string, temp: number) =>
       `*Current weather in ${name}*\nCondition: ${condition}\nTemperature: ${temp}°C`,
     alreadySubscribed:
-      "You are already subscribed\\! Use `/weatherReset` to remove subscription",
+      "You are already subscribed\\! Use `/weatherreset` to remove subscription",
     notSubscribed:
-      "You aren't subscribed\\! Use `/weatherNotify` to set subscription",
+      "You aren't subscribed\\! Use `/weathernotify` to set subscription",
     subscribeHelp:
-      "To get daily forecasts, use `/weatherNotify <time> <city>`\n\\(e\\.g\\. `/weatherNotify 12:00 Moscow`\\)",
+      "To get daily forecasts, use `/weathernotify <time> <city>`\n\\(e\\.g\\. `/weathernotify 12:00 Moscow`\\)",
     incorrectSubscribeTime:
       "Incorrect time format\\. Make sure to enter it in format, like `12:00`, `00:30`, etc\\.",
     successfullySubscribed: (city: string, time: string) =>
