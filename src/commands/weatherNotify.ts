@@ -22,14 +22,14 @@ weatherNotify.command("weathernotify", async (ctx) => {
     });
   }
 
-  const params = ctx.msg.text.split(" ");
+  const params = ctx.match.split(" ");
   if (params.length < 2) {
     return ctx.reply(LOCALE.weather.subscribeHelp, {
       parse_mode: "MarkdownV2",
     });
   }
 
-  const [time, ...weatherCity] = params.slice(1);
+  const [time, ...weatherCity] = params;
   const city = weatherCity.join(" ");
 
   if (!checkTimeFormat(time)) {
