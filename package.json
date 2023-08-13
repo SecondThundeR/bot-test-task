@@ -12,6 +12,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@grammyjs/conversations": "^1.1.2",
     "@grammyjs/ratelimiter": "^1.2.0",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
