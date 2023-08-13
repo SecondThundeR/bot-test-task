@@ -8,11 +8,14 @@ export const LOCALE = {
   start: "Welcome! To get more info about functionality, type /help",
   help: "Available bot commands:\n" + COMMANDS_LIST.join("\n"),
   weather: {
-    noCity:
-      'Provide city to get weather for. Example: "Moscow", "Kiev", "Minsk", etc. ',
+    enterCity:
+      'Provide city to get weather for. Example: "Moscow", "Kiev", "Minsk", etc.',
+    botCommand:
+      "Please provide something other than bot command as weather city",
+    nonText: "Provide city to get weather for",
     noData: "Failed to get weather data, as API returned nothing :c",
     result: (name: string, condition: string, temp: number) =>
-      `*Current weather in ${name}*\nCondition: ${condition}\nTemperature: ${temp}°C`,
+      `<b>Current weather in ${name}</b>\nCondition: ${condition}\nTemperature: ${temp}°C`,
     alreadySubscribed:
       "You are already subscribed\\! Use `/weatherreset` to remove subscription",
     notSubscribed:

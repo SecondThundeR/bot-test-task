@@ -15,8 +15,10 @@ import {
   type Subscription,
 } from "@/store/weather/subscriptions";
 
+import { type BotContext } from "@/types/bot";
+
 export async function onStartHandler(
-  bot: Bot,
+  bot: Bot<BotContext>,
   postgres: Client,
   botInfo: UserFromGetMe,
 ) {

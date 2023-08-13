@@ -40,7 +40,7 @@ weatherNotify.command("weathernotify", async (ctx) => {
   }
 
   if (!city) {
-    return ctx.reply(LOCALE.weather.noCity);
+    return ctx.reply(LOCALE.weather.enterCity);
   }
 
   const weatherData = await getCurrentWeather(city);

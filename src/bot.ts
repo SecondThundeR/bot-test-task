@@ -1,6 +1,7 @@
 import "dotenv/config";
 
-import { Bot } from "grammy";
+import { Bot, session } from "grammy";
+import { conversations, createConversation } from "@grammyjs/conversations";
 import { limit } from "@grammyjs/ratelimiter";
 import Redis from "ioredis";
 import { Client } from "pg";
@@ -19,6 +20,10 @@ import { LOCALE } from "@/constants/locale";
 import { errorHandler } from "@/handlers/bot/errorHandler";
 import { onStartHandler } from "@/handlers/bot/onStartHandler";
 import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
+
+import { type BotContext } from "@/types/bot";
+
+import { weatherConversation } from "@/conversations/weatherConversation";
 
 const {
   BOT_TOKEN,
@@ -53,7 +58,7 @@ export const postgres = new Client({
   password: PGPASSWORD,
 });
 
-const bot = new Bot(BOT_TOKEN);
+const bot = new Bot<BotContext>(BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
 bot.api
@@ -85,6 +90,16 @@ bot.use(
     },
   }),
 );
+
+pm.use(
+  session({
+    initial() {
+      return {};
+    },
+  }),
+);
+pm.use(conversations());
+pm.use(createConversation(weatherConversation));
 
 pm.use(start);
 pm.use(help);
