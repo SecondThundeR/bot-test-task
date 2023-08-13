@@ -25,6 +25,8 @@ import { type BotContext } from "@/types/bot";
 
 import { weatherConversation } from "@/conversations/weatherConversation";
 
+import { weatherNotifyConversation } from "./conversations/weatherNotifyConversation";
+
 const {
   BOT_TOKEN,
   REDISPORT,
@@ -100,6 +102,7 @@ pm.use(
 );
 pm.use(conversations());
 pm.use(createConversation(weatherConversation));
+pm.use(createConversation(weatherNotifyConversation));
 
 pm.use(start);
 pm.use(help);

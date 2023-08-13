@@ -15,12 +15,11 @@ weatherReset.command("weatherreset", async (ctx) => {
   }
 
   if (!hasSubscriptionData(userID)) {
-    return ctx.reply(LOCALE.weather.notSubscribed, {
+    return ctx.reply(LOCALE.weatherNotify.notSubscribed, {
       parse_mode: "MarkdownV2",
     });
   }
 
   await removeSubscriber(userID);
-
-  return ctx.reply(LOCALE.weather.successfullyUnsubscribed);
+  return ctx.reply(LOCALE.weatherNotify.successfullyUnsubscribed);
 });

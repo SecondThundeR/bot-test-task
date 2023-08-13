@@ -16,19 +16,25 @@ export const LOCALE = {
     noData: "Failed to get weather data, as API returned nothing :c",
     result: (name: string, condition: string, temp: number) =>
       `<b>Current weather in ${name}</b>\nCondition: ${condition}\nTemperature: ${temp}°C`,
+    failedFetch: "Failed to find weather data in passed location",
+  },
+  weatherNotify: {
+    botCommandTime:
+      "Please provide something other than bot command as subscription time",
+    botCommandCity:
+      "Please provide something other than bot command as weather city",
+    subscriptionTimeHelp:
+      "Enter time for daily subscription, like `12:00`, `00:30`, etc",
+    incorrectSubscribeTime:
+      "Incorrect time format\\. Make sure to enter it in format, like `12:00`, `00:30`, etc\\.",
     alreadySubscribed:
       "You are already subscribed\\! Use `/weatherreset` to remove subscription",
     notSubscribed:
       "You aren't subscribed\\! Use `/weathernotify` to set subscription",
-    subscribeHelp:
-      "To get daily forecasts, use `/weathernotify <time> <city>`\n\\(e\\.g\\. `/weathernotify 12:00 Moscow`\\)",
-    incorrectSubscribeTime:
-      "Incorrect time format\\. Make sure to enter it in format, like `12:00`, `00:30`, etc\\.",
     successfullySubscribed: (city: string, time: string) =>
       `You have been subscribed successfully\\! You will recieve your daily forecasts for "${city}" at "${time}"`,
     successfullyUnsubscribed:
       "You have been unsubscribed successfully! You won't recieve your daily forecasts anymore",
-    failedFetch: "Failed to find weather data in passed location",
   },
   cat: {
     noData:
@@ -45,5 +51,7 @@ export const LOCALE = {
     failedParse: "Failed to process data. Contact developer to get support",
     hitRateLimit:
       "You are sending too many requests! Please wait before sending new one",
+    failedConversation:
+      "Looks like you have problems filling in the necessary data. Try again or contact developer if you think this is not your issue",
   },
 } as const;
