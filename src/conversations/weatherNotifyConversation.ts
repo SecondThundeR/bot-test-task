@@ -1,3 +1,4 @@
+import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
 import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
@@ -7,10 +8,8 @@ import { hasSubscriptionData } from "@/store/weather/subscriptions";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-import { hasCommandEntities } from "@/utils/message/hasCommandEntities";
-import { checkTimeFormat } from "@/utils/time/checkTimeFormat";
-
-const FAILED_ATTEMPTS_THRESHOLD = 3;
+import { checkTimeFormat } from "@/utils/checkTimeFormat";
+import { hasCommandEntities } from "@/utils/hasCommandEntities";
 
 export async function weatherNotifyConversation(
   conversation: BotConversation,
@@ -28,81 +27,73 @@ export async function weatherNotifyConversation(
   }
 
   let failedAttempts = 0;
-  let subscriptionTime: string;
-  await ctx.reply(LOCALE.weatherNotify.subscriptionTimeHelp, {
+  let subscriptionTime: string, subscriptionCity: string;
+  await ctx.reply(
+    `${LOCALE.weatherNotify.subscriptionTimeHelp}\n${LOCALE.general.cancelTip}`,
+    {
+      parse_mode: "MarkdownV2",
+    },
+  );
+
+  while (true) {
+    const message = await conversation.waitFor("message:text", {
+      otherwise: async (ctx) => {
+        await ctx.reply(LOCALE.weatherNotify.subscriptionTimeHelp, {
+          parse_mode: "MarkdownV2",
+        });
+      },
+    });
+    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
+
+    const { msg: timeMessage } = message;
+    if (!hasCommandEntities(timeMessage) && checkTimeFormat(timeMessage.text)) {
+      subscriptionTime = timeMessage.text;
+      break;
+    }
+
+    failedAttempts++;
+
+    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
+      return ctx.reply(LOCALE.general.failedConversation);
+
+    await ctx.reply(LOCALE.weatherNotify.incorrectSubscribeTime, {
+      parse_mode: "MarkdownV2",
+    });
+  }
+
+  failedAttempts = 0;
+  await ctx.reply(`${LOCALE.weather.enterCity}\n${LOCALE.general.cancelTip}`, {
     parse_mode: "MarkdownV2",
   });
 
-  do {
-    console.log("Iteration! Attempts failed:", failedAttempts);
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD) {
-      return ctx.reply(LOCALE.general.failedConversation);
-    }
-
-    const { msg: timeMessage } = await conversation.waitFor("message:text", {
+  while (true) {
+    const message = await conversation.waitFor("message:text", {
       otherwise: async (ctx) => {
-        failedAttempts++;
-        await ctx.reply(LOCALE.weatherNotify.subscriptionTimeHelp);
-      },
-    });
-    if (hasCommandEntities(timeMessage)) {
-      failedAttempts++;
-      await ctx.reply(LOCALE.weatherNotify.botCommandTime, {
-        parse_mode: "MarkdownV2",
-      });
-      continue;
-    }
-
-    subscriptionTime = timeMessage.text;
-    if (!checkTimeFormat(subscriptionTime)) {
-      failedAttempts++;
-      await ctx.reply(LOCALE.weatherNotify.incorrectSubscribeTime, {
-        parse_mode: "MarkdownV2",
-      });
-      continue;
-    }
-    break;
-  } while (true);
-
-  failedAttempts = 0;
-  let subscriptionCity: string;
-  await ctx.reply(LOCALE.weather.enterCity);
-
-  do {
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD) {
-      return ctx.reply(LOCALE.general.failedConversation);
-    }
-
-    const { msg: cityMessage } = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        failedAttempts++;
         await ctx.reply(LOCALE.weather.enterCity);
       },
     });
-    if (hasCommandEntities(cityMessage)) {
-      failedAttempts++;
-      await ctx.reply(LOCALE.weatherNotify.botCommandCity, {
-        parse_mode: "MarkdownV2",
-      });
-      continue;
+    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
+
+    const { msg: cityMessage } = message;
+    if (!hasCommandEntities(cityMessage)) {
+      const weatherData = await conversation.external(() =>
+        getCurrentWeather(cityMessage.text),
+      );
+      if (weatherData && typeof weatherData !== "string") {
+        subscriptionCity = cityMessage.text;
+        break;
+      }
     }
 
-    subscriptionCity = cityMessage.text;
-    const weatherData = await conversation.external(() =>
-      getCurrentWeather(subscriptionCity),
-    );
-    if (!weatherData) {
-      failedAttempts++;
-      await ctx.reply(LOCALE.weather.noData);
-      continue;
-    }
-    if (typeof weatherData === "string") {
-      failedAttempts++;
-      await ctx.reply(weatherData);
-      continue;
-    }
-    break;
-  } while (true);
+    failedAttempts++;
+
+    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
+      return ctx.reply(LOCALE.general.failedConversation);
+
+    await ctx.reply(LOCALE.weather.nonText, {
+      parse_mode: "MarkdownV2",
+    });
+  }
 
   await registerSubscriber(userID, subscriptionCity, subscriptionTime);
   return ctx.reply(

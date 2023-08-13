@@ -1,0 +1,1 @@
+export const FAILED_ATTEMPTS_THRESHOLD = 3;

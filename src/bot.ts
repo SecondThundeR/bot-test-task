@@ -24,9 +24,8 @@ import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
 import { type BotContext } from "@/types/bot";
 
 import { weatherConversation } from "@/conversations/weatherConversation";
+import { weatherNotifyConversation } from "@/conversations/weatherNotifyConversation";
 import { env } from "@/env";
-
-import { weatherNotifyConversation } from "./conversations/weatherNotifyConversation";
 
 const redis = new Redis({
   port: env.REDISPORT,

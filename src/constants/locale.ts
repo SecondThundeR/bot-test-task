@@ -1,4 +1,4 @@
-import { COMMANDS_DATA } from "./commandsData";
+import { COMMANDS_DATA } from "@/constants/commandsData";
 
 const COMMANDS_LIST = COMMANDS_DATA.map(
   (commandData) => `/${commandData.command} - ${commandData.description}`,
@@ -9,9 +9,7 @@ export const LOCALE = {
   help: "Available bot commands:\n" + COMMANDS_LIST.join("\n"),
   weather: {
     enterCity:
-      'Provide city to get weather for. Example: "Moscow", "Kiev", "Minsk", etc.',
-    botCommand:
-      "Please provide something other than bot command as weather city",
+      'Provide city to get weather for\\. Example: "Moscow", "Kiev", "Minsk", etc\\.',
     nonText: "Provide city to get weather for",
     noData: "Failed to get weather data, as API returned nothing :c",
     result: (name: string, condition: string, temp: number) =>
@@ -19,12 +17,8 @@ export const LOCALE = {
     failedFetch: "Failed to find weather data in passed location",
   },
   weatherNotify: {
-    botCommandTime:
-      "Please provide something other than bot command as subscription time",
-    botCommandCity:
-      "Please provide something other than bot command as weather city",
     subscriptionTimeHelp:
-      "Enter time for daily subscription, like `12:00`, `00:30`, etc",
+      "Enter time for daily subscription, like `12:00`, `00:30`, etc\\.",
     incorrectSubscribeTime:
       "Incorrect time format\\. Make sure to enter it in format, like `12:00`, `00:30`, etc\\.",
     alreadySubscribed:
@@ -47,6 +41,8 @@ export const LOCALE = {
     failedFetch: "Failed to fetch random dog!",
   },
   general: {
+    cancelTip: "To cancel, type `/cancel`",
+    canceled: "Command canceled!",
     noUserID: "Can't get userID!",
     failedParse: "Failed to process data. Contact developer to get support",
     hitRateLimit:

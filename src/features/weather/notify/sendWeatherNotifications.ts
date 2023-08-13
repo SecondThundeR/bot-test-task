@@ -6,18 +6,15 @@ import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather
 
 import { subscriptions } from "@/store/weather/subscriptions";
 
+import { isSubscriptionTime } from "@/utils/isSubscriptionTime";
+
 export async function sendWeatherNotifications(api: Api<RawApi>) {
   if (subscriptions.length === 0) return;
   const currentDate = new Date();
 
   for (const subscription of subscriptions) {
     const { userID, city, time } = subscription;
-    const [hours, minutes] = time.split(":");
-    if (
-      parseInt(hours) !== currentDate.getHours() ||
-      parseInt(minutes) !== currentDate.getMinutes()
-    )
-      continue;
+    if (!isSubscriptionTime(time, currentDate)) continue;
 
     const weatherData = await getCurrentWeather(city);
     if (typeof weatherData === "string") {

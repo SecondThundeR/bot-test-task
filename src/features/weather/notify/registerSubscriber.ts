@@ -9,6 +9,13 @@ export async function registerSubscriber(
   city: string,
   time: string,
 ) {
-  await postgres.query(SET_WEATHER_NOTIFICATION, [userID, city, time]);
-  setSubscriptionData(userID, city, time);
+  try {
+    await postgres.query(SET_WEATHER_NOTIFICATION, [userID, city, time]);
+    setSubscriptionData(userID, city, time);
+  } catch (error: unknown) {
+    console.error(
+      "Failed to register a subscriber. More details:",
+      (error as Error).message,
+    );
+  }
 }

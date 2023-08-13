@@ -1,8 +1,11 @@
-import { GrammyError, HttpError, type BotError, type Context } from "grammy";
+import { GrammyError, HttpError, type BotError } from "grammy";
 
-export function errorHandler(err: BotError<Context>) {
+import { type BotContext } from "@/types/bot";
+
+export function errorHandler(err: BotError<BotContext>) {
   const ctx = err.ctx;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
+
   const error = err.error;
   if (error instanceof GrammyError) {
     console.error("Error in request:", error.description);

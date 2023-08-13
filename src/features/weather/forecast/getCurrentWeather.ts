@@ -5,7 +5,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
 
-import { processError } from "@/utils/features/processError";
+import { processError } from "@/utils/processError";
 
 import { env } from "@/env";
 
