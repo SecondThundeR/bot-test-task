@@ -7,11 +7,13 @@ import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
 
 import { processError } from "@/utils/features/processError";
 
+import { env } from "@/env";
+
 export async function getCurrentWeather(city: string) {
   try {
     const res = await axios.get(WEATHER_API_ENDPOINT, {
       params: {
-        key: process.env.WEATHER_API_KEY,
+        key: env.WEATHER_API_KEY,
         q: city,
         aqi: "no",
       },

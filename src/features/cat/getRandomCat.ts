@@ -7,11 +7,13 @@ import { CatResponseSchema } from "@/schemas/cat/catSchema";
 
 import { processError } from "@/utils/features/processError";
 
+import { env } from "@/env";
+
 export async function getRandomCat() {
   try {
     const res = await axios.get(CAT_API_ENDPOINT, {
       headers: {
-        "x-api-key": process.env.CAT_API_KEY,
+        "x-api-key": env.CAT_API_KEY,
       },
     });
     return await CatResponseSchema.parseAsync(res.data);

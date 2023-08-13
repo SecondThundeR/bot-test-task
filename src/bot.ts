@@ -24,43 +24,26 @@ import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
 import { type BotContext } from "@/types/bot";
 
 import { weatherConversation } from "@/conversations/weatherConversation";
+import { env } from "@/env";
 
 import { weatherNotifyConversation } from "./conversations/weatherNotifyConversation";
 
-const {
-  BOT_TOKEN,
-  REDISPORT,
-  REDISHOST,
-  REDISUSER,
-  REDISPASSWORD,
-  PGDATABASE,
-  PGHOST,
-  PGPASSWORD,
-  PGPORT,
-  PGUSER,
-} = process.env;
-
-if (!BOT_TOKEN) {
-  console.error("Bot token is empty!");
-  process.exit(1);
-}
-
 const redis = new Redis({
-  port: Number(REDISPORT),
-  host: REDISHOST,
-  username: REDISUSER,
-  password: REDISPASSWORD,
+  port: env.REDISPORT,
+  host: env.REDISHOST,
+  username: env.REDISUSER,
+  password: env.REDISPASSWORD,
 });
 
 export const postgres = new Client({
-  host: PGHOST,
-  port: Number(PGPORT),
-  database: PGDATABASE,
-  user: PGUSER,
-  password: PGPASSWORD,
+  host: env.PGHOST,
+  port: env.PGPORT,
+  database: env.PGDATABASE,
+  user: env.PGUSER,
+  password: env.PGPASSWORD,
 });
 
-const bot = new Bot<BotContext>(BOT_TOKEN);
+const bot = new Bot<BotContext>(env.BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
 bot.api
