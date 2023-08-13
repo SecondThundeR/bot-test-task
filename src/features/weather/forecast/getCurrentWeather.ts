@@ -18,7 +18,7 @@ export async function getCurrentWeather(city: string) {
         aqi: "no",
       },
     });
-    return await WeatherResponseSchema.parseAsync(res.data);
+    return WeatherResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     return processError(error, LOCALE.weather.failedFetch);
   }

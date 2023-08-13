@@ -22,7 +22,7 @@ export async function weatherConversation(
   });
 
   if (hasCommandEntities(message)) {
-    return await ctx.reply(LOCALE.weather.botCommand);
+    return ctx.reply(LOCALE.weather.botCommand);
   }
 
   const cityName = message.text;
@@ -30,17 +30,17 @@ export async function weatherConversation(
     getCurrentWeather(cityName),
   );
   if (!weatherData) {
-    return await ctx.reply(LOCALE.weather.noData);
+    return ctx.reply(LOCALE.weather.noData);
   }
 
   if (typeof weatherData === "string") {
-    return await ctx.reply(weatherData);
+    return ctx.reply(weatherData);
   }
 
   const { condition, temp_c } = weatherData.current;
   const { name } = weatherData.location;
 
-  return await ctx.reply(LOCALE.weather.result(name, condition.text, temp_c), {
+  return ctx.reply(LOCALE.weather.result(name, condition.text, temp_c), {
     parse_mode: "HTML",
   });
 }

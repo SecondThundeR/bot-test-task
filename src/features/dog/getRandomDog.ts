@@ -16,7 +16,7 @@ export async function getRandomDog() {
         "x-api-key": env.DOG_API_KEY,
       },
     });
-    return await CatResponseSchema.parseAsync(res.data);
+    return CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     processError(error, LOCALE.dog.failedFetch);
   }

@@ -16,7 +16,7 @@ export async function getRandomCat() {
         "x-api-key": env.CAT_API_KEY,
       },
     });
-    return await CatResponseSchema.parseAsync(res.data);
+    return CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
     processError(error, LOCALE.cat.failedFetch);
   }
