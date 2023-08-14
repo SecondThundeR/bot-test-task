@@ -22,6 +22,8 @@ const config = {
     "",
     "^@/constants/(.*)$",
     "",
+    "^@/conversations/(.*)$",
+    "",
     "^@/features/(.*)$",
     "",
     "^@/handlers/(.*)$",
