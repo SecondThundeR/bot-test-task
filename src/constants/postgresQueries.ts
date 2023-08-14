@@ -7,11 +7,30 @@ CREATE TABLE IF NOT EXISTS "weatherNotify" (
   PRIMARY KEY ("id")
 );` as const;
 
+export const TODOS_QUERY = `
+CREATE TABLE IF NOT EXISTS "userTodos" (
+  "id" SERIAL,
+  "userID" INTEGER NOT NULL,
+  "text" VARCHAR(200) NOT NULL,
+  "done" BOOLEAN NOT NULL,
+  PRIMARY KEY ("id")
+);` as const;
+
 export const GET_WEATHER_NOTIFICATIONS =
   'SELECT "userID", "time", "city" FROM "weatherNotify";' as const;
-export const GET_WEATHER_NOTIFICATION =
-  'SELECT * FROM "weatherNotify" WHERE "userID" = $1;' as const;
 export const SET_WEATHER_NOTIFICATION =
-  'INSERT INTO "weatherNotify"("userID", "city", "time") VALUES($1, $2, $3) RETURNING *;' as const;
+  'INSERT INTO "weatherNotify"("userID", "city", "time") VALUES($1, $2, $3);' as const;
 export const REMOVE_WEATHER_NOTIFICATION =
   'DELETE FROM "weatherNotify" WHERE "userID" = $1;' as const;
+
+export const GET_USERS_TODOS = 'SELECT * FROM "userTodos"' as const;
+export const SET_USER_TODO =
+  'INSERT INTO "userTodos"("userID", "text", "done") VALUES($1, $2, $3) RETURNING *;' as const;
+export const UPDATE_USER_TODO_TEXT =
+  'UPDATE "userTodos" SET "text" = $1 WHERE "userID" = $2;' as const;
+export const UPDATE_USER_TODO_DONE =
+  'UPDATE "userTodos" SET "done" = $1 WHERE "userID" = $2;' as const;
+export const REMOVE_USER_TODO =
+  'DELETE FROM "userTodos" WHERE "id" = $1 AND "userID" = $2;' as const;
+export const REMOVE_USER_TODOS =
+  'DELETE FROM "userTodos" WHERE "userID" = $1;' as const;
