@@ -28,6 +28,8 @@ const config = {
     "",
     "^@/handlers/(.*)$",
     "",
+    "^@/menus/(.*)$",
+    "",
     "^@/schemas/(.*)$",
     "",
     "^@/store/(.*)$",
