@@ -10,6 +10,7 @@ import { cat } from "@/commands/cat";
 import { dog } from "@/commands/dog";
 import { help } from "@/commands/help";
 import { start } from "@/commands/start";
+import { todos } from "@/commands/todos";
 import { weather } from "@/commands/weather";
 import { weatherNotify } from "@/commands/weatherNotify";
 import { weatherReset } from "@/commands/weatherReset";
@@ -18,12 +19,15 @@ import { COMMANDS_DATA } from "@/constants/commandsData";
 import { LOCALE } from "@/constants/locale";
 
 import { createTodoConversation } from "@/conversations/createTodoConversation";
+import { updateTodoConversation } from "@/conversations/updateTodoConversation";
 import { weatherConversation } from "@/conversations/weatherConversation";
 import { weatherNotifyConversation } from "@/conversations/weatherNotifyConversation";
 
 import { errorHandler } from "@/handlers/bot/errorHandler";
 import { onStartHandler } from "@/handlers/bot/onStartHandler";
 import { shutdownHandler } from "@/handlers/bot/shutdownHandler";
+
+import { todosMenu } from "@/menus/todosMenu";
 
 import { type BotContext } from "@/types/bot";
 
@@ -80,14 +84,20 @@ bot.use(
 pm.use(
   session({
     initial() {
-      return {};
+      return {
+        currentOffset: 0,
+      };
     },
   }),
 );
+
 pm.use(conversations());
 pm.use(createConversation(weatherConversation));
 pm.use(createConversation(weatherNotifyConversation));
 pm.use(createConversation(createTodoConversation));
+pm.use(createConversation(updateTodoConversation));
+
+pm.use(todosMenu);
 
 pm.use(start);
 pm.use(help);
@@ -96,6 +106,7 @@ pm.use(weatherNotify);
 pm.use(weatherReset);
 pm.use(cat);
 pm.use(dog);
+pm.use(todos);
 
 bot.catch((err) => errorHandler(err));
 
