@@ -27,10 +27,10 @@ export const GET_USERS_TODOS = 'SELECT * FROM "userTodos"' as const;
 export const SET_USER_TODO =
   'INSERT INTO "userTodos"("userID", "text", "done") VALUES($1, $2, $3) RETURNING *;' as const;
 export const UPDATE_USER_TODO_TEXT =
-  'UPDATE "userTodos" SET "text" = $1 WHERE "userID" = $2;' as const;
+  'UPDATE "userTodos" SET "text" = $1 WHERE "id" = $2;' as const;
 export const UPDATE_USER_TODO_DONE =
-  'UPDATE "userTodos" SET "done" = $1 WHERE "userID" = $2;' as const;
+  'UPDATE "userTodos" SET "done" = $1 WHERE "id" = $2;' as const;
 export const REMOVE_USER_TODO =
-  'DELETE FROM "userTodos" WHERE "id" = $1 AND "userID" = $2;' as const;
+  'DELETE FROM "userTodos" WHERE "id" = $1;' as const;
 export const REMOVE_USER_TODOS =
   'DELETE FROM "userTodos" WHERE "userID" = $1;' as const;
