@@ -9,6 +9,6 @@ export async function updateTodoDone(
   userID: number,
   done: boolean,
 ) {
-  await postgres.query(UPDATE_USER_TODO_DONE, [id, done]);
+  await postgres.query(UPDATE_USER_TODO_DONE, [done, id]);
   updateTodoData(id, userID, { done });
 }
