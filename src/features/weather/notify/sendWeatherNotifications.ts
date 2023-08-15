@@ -28,7 +28,7 @@ export async function sendWeatherNotifications(api: Api<RawApi>) {
       userID,
       LOCALE.weather.result(name, condition.text, temp_c),
       {
-        parse_mode: "MarkdownV2",
+        parse_mode: "HTML",
       },
     );
   }
