@@ -1,11 +1,11 @@
 import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
-import { createNewTodo } from "@/features/todos/createNewTodo";
+import { updateTodoText } from "@/features/todos/updateTodoText";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-export async function createTodoConversation(
+export async function updateTodoConversation(
   conversation: BotConversation,
   ctx: BotContext,
 ) {
@@ -14,7 +14,12 @@ export async function createTodoConversation(
     return ctx.reply(LOCALE.general.noUserID);
   }
 
-  await ctx.reply(`${LOCALE.todos.enterText}\n${LOCALE.general.cancelTip}`, {
+  const todoID = ctx.session.selectedTodo?.id;
+  if (!todoID) {
+    return ctx.reply(LOCALE.todos.noTodo);
+  }
+
+  await ctx.reply(`${LOCALE.todos.enterNewText}\n${LOCALE.general.cancelTip}`, {
     parse_mode: "MarkdownV2",
   });
 
@@ -35,8 +40,8 @@ export async function createTodoConversation(
     const { msg } = message;
 
     try {
-      await createNewTodo(userID, msg.text);
-      return ctx.reply(LOCALE.todos.successfullyCreated);
+      await updateTodoText(todoID, userID, msg.text);
+      return ctx.reply(LOCALE.todos.successfullyUpdated);
     } catch (error: unknown) {
       await ctx.reply((error as Error).message);
       failedAttempts++;
