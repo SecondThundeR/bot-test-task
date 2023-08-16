@@ -4,5 +4,10 @@ const DATE_FORMAT = "DD.MM.YYYY";
 
 export function isValidDate(date?: string) {
   if (!date) return false;
-  return moment(date, DATE_FORMAT).isValid();
+
+  const parsedDate = moment(date, DATE_FORMAT);
+  if (!parsedDate.isValid()) return false;
+
+  const currentDate = moment(new Date()).startOf("day");
+  return parsedDate.isSameOrAfter(currentDate);
 }
