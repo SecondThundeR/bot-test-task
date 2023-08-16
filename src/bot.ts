@@ -20,8 +20,8 @@ import { LOCALE } from "@/constants/locale";
 
 import { createTodo } from "@/conversations/createTodo";
 import { getWeather } from "@/conversations/getWeather";
+import { setTodoText } from "@/conversations/setTodoText";
 import { setWeatherNotification } from "@/conversations/setWeatherNotification";
-import { updateTodoText } from "@/conversations/updateTodoText";
 
 import { errorHandler } from "@/handlers/bot/errorHandler";
 import { onStartHandler } from "@/handlers/bot/onStartHandler";
@@ -94,8 +94,8 @@ pm.use(
 pm.use(conversations());
 pm.use(createConversation(createTodo));
 pm.use(createConversation(getWeather));
+pm.use(createConversation(setTodoText));
 pm.use(createConversation(setWeatherNotification));
-pm.use(createConversation(updateTodoText));
 
 pm.use(todosMenu);
 

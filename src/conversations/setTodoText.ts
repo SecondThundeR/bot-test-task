@@ -5,7 +5,7 @@ import { updateTodoText } from "@/features/todos/updateTodoText";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-export async function updateTodoText(
+export async function setTodoText(
   conversation: BotConversation,
   ctx: BotContext,
 ) {
