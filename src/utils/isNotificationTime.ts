@@ -1,6 +1,6 @@
 export function isNotificationTime(
-  date: string | undefined,
-  time: string | undefined,
+  date: string | null,
+  time: string | null,
   currentDate: Date,
 ) {
   if (!date || !time) return false;
@@ -8,7 +8,7 @@ export function isNotificationTime(
   const isValidDate =
     day === currentDate.getDate() &&
     month === currentDate.getMonth() + 1 &&
-    year !== currentDate.getFullYear();
+    year === currentDate.getFullYear();
   if (!isValidDate) return false;
 
   const [hours, minutes] = time.split(":").map(Number);
