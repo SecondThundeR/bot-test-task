@@ -6,6 +6,8 @@ import { OFFSET_STEP } from "@/constants/offsetStep";
 
 import { type BotContext } from "@/types/bot";
 
+import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+
 import { todoMenu } from "./todoMenu";
 
 export const todosMenu = new Menu<BotContext>("todos-menu", {
@@ -32,12 +34,18 @@ export const todosMenu = new Menu<BotContext>("todos-menu", {
       if (!todo) return;
 
       const { text, done } = todo;
+      const hasNotification = isTodoNotificationSet(todo);
 
       range
-        .text(`${index + 1}. ${text}${done ? " ✅" : ""}`, (ctx) => {
-          ctx.session.selectedTodo = todo;
-          ctx.menu.nav("todo-menu");
-        })
+        .text(
+          `${index + 1}. ${text}${hasNotification ? " (🔔)" : ""}${
+            done ? " ✅" : ""
+          }`,
+          (ctx) => {
+            ctx.session.selectedTodo = todo;
+            ctx.menu.nav("todo-menu");
+          },
+        )
         .row();
     }
   })

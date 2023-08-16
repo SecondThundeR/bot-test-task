@@ -1,21 +1,41 @@
 import { Menu } from "@grammyjs/menu";
 
-import { SET_TODO_TEXT } from "@/constants/conversationIds";
+import {
+  SET_TODO_NOTIFICATION,
+  SET_TODO_TEXT,
+} from "@/constants/conversationIds";
 import { LOCALE } from "@/constants/locale";
 import { OFFSET_STEP } from "@/constants/offsetStep";
 
 import { deleteTodo } from "@/features/todos/deleteTodo";
+import { resetTodoNotificationDate } from "@/features/todos/resetTodoNotificationDate";
 import { updateTodoDone } from "@/features/todos/updateTodoDone";
 
 import { type BotContext } from "@/types/bot";
 
+import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+
 export const todoMenu = new Menu<BotContext>("todo-menu")
   .text((ctx) => `${LOCALE.menu.selected}${ctx.session.selectedTodo!.text}`)
   .row()
-  .text(LOCALE.menu.updateText, async (ctx) => {
-    await ctx.deleteMessage();
-    await ctx.conversation.enter(SET_TODO_TEXT);
-  })
+  .text(
+    (ctx) => {
+      return LOCALE.todos.manageNotificationText(ctx.session.selectedTodo!);
+    },
+    async (ctx) => {
+      const { selectedTodo } = ctx.session;
+
+      if (isTodoNotificationSet(selectedTodo!)) {
+        const userID = ctx.from.id;
+        await resetTodoNotificationDate(selectedTodo!.id, userID);
+        return ctx.menu.update();
+      }
+
+      await ctx.deleteMessage();
+      await ctx.conversation.enter(SET_TODO_NOTIFICATION);
+    },
+  )
+  .row()
   .text(
     (ctx) => {
       const doneStatus = ctx.session.selectedTodo!.done;
@@ -33,6 +53,10 @@ export const todoMenu = new Menu<BotContext>("todo-menu")
       ctx.menu.update();
     },
   )
+  .text(LOCALE.menu.updateText, async (ctx) => {
+    await ctx.deleteMessage();
+    await ctx.conversation.enter(SET_TODO_TEXT);
+  })
   .text(LOCALE.menu.delete, async (ctx) => {
     const { selectedTodo, currentTodoList } = ctx.session;
     const todoID = selectedTodo!.id;
