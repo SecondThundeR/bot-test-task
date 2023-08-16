@@ -2,6 +2,8 @@ import { type Api, type RawApi } from "grammy";
 
 import { LOCALE } from "@/constants/locale";
 
+import { resetTodoNotificationDate } from "@/features/todos/resetTodoNotificationDate";
+
 import { todos, type TodoEntry } from "@/store/user/todos";
 
 import { isNotificationTime } from "@/utils/isNotificationTime";
@@ -15,13 +17,17 @@ export async function sendTodosNotifications(api: Api<RawApi>, date: Date) {
       acc.push(curr);
       return acc;
     }, [] as TodoEntry[]);
-    if (!notificationTodos) continue;
+    if (notificationTodos.length === 0) continue;
 
     const notificationTexts: string[] = [];
     for (const todo of notificationTodos) {
-      if (!isNotificationTime(todo?.date, todo?.time, date)) continue;
+      if (!isNotificationTime(todo.date, todo.time, date)) continue;
+
       notificationTexts.push(todo.text);
+      resetTodoNotificationDate(todo.id, userID).catch(console.error);
     }
+
+    if (notificationTexts.length === 0) continue;
 
     await api.sendMessage(
       userID,
