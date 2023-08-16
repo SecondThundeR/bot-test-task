@@ -2,8 +2,8 @@ export interface TodoEntry {
   id: number;
   text: string;
   done: boolean;
-  date?: string;
-  time?: string;
+  date: string | null;
+  time: string | null;
 }
 
 type TodoEntryUpdateData = Partial<Omit<TodoEntry, "id">>;
@@ -37,7 +37,7 @@ export function insertTodoData(id: number, userID: number, text: string) {
       `Task text is more than ${TODOS_NAME_MAX_LENGTH} characters`,
     );
 
-  const newTodo = { id, text, done: false };
+  const newTodo: TodoEntry = { id, text, done: false, date: null, time: null };
   const userTodos = todos.get(userID);
   if (!userTodos) {
     return todos.set(userID, [newTodo]);
@@ -60,7 +60,7 @@ export function updateTodoData(
 
   const updatedTodoData = userTodos[todoIndex];
 
-  const { text, done } = updateData;
+  const { text, done, date, time } = updateData;
 
   if (text) {
     const updatedText =
@@ -68,6 +68,29 @@ export function updateTodoData(
     updatedTodoData.text = updatedText;
   }
   if (done) updatedTodoData.done = done;
+  if (date && time) {
+    updatedTodoData.date = date;
+    updatedTodoData.time = time;
+  }
+
+  userTodos[todoIndex] = updatedTodoData;
+
+  todos.set(userID, userTodos);
+}
+
+export function resetTodoNotificationTime(id: number, userID: number) {
+  if (!todos.has(userID)) return;
+
+  const userTodos = todos.get(userID);
+  if (!userTodos) return;
+
+  const todoIndex = userTodos.findIndex((todo) => todo.id == id);
+  if (todoIndex == -1) return;
+
+  const updatedTodoData = userTodos[todoIndex];
+
+  updatedTodoData.date = null;
+  updatedTodoData.date = null;
 
   userTodos[todoIndex] = updatedTodoData;
 
