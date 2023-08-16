@@ -1,8 +1,8 @@
 import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
-import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
-import { registerSubscriber } from "@/features/weather/notify/registerSubscriber";
+import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
+import { registerSubscriber } from "@/features/weather/registerSubscriber";
 
 import { hasSubscriptionData } from "@/store/weather/subscriptions";
 
