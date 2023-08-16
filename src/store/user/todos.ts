@@ -2,6 +2,8 @@ export interface TodoEntry {
   id: number;
   text: string;
   done: boolean;
+  date?: string;
+  time?: string;
 }
 
 type TodoEntryUpdateData = Partial<Omit<TodoEntry, "id">>;
