@@ -9,6 +9,8 @@ import { subscriptions } from "@/store/weather/subscriptions";
 import { isSubscriptionTime } from "@/utils/isSubscriptionTime";
 
 export async function sendWeatherNotifications(api: Api<RawApi>, date: Date) {
+  if (subscriptions.length === 0) return;
+
   for (const subscription of subscriptions) {
     const { userID, city, time } = subscription;
     if (!isSubscriptionTime(time, date)) continue;
