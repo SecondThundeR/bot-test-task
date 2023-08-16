@@ -2,7 +2,7 @@ import { Composer } from "grammy";
 
 import { LOCALE } from "@/constants/locale";
 
-import { removeSubscriber } from "@/features/weather/notify/removeSubscriber";
+import { removeSubscriber } from "@/features/weather/removeSubscriber";
 
 import { hasSubscriptionData } from "@/store/weather/subscriptions";
 

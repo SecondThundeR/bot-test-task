@@ -1,7 +1,7 @@
 import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
-import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
+import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 

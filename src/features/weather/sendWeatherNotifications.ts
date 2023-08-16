@@ -2,19 +2,16 @@ import { type Api, type RawApi } from "grammy";
 
 import { LOCALE } from "@/constants/locale";
 
-import { getCurrentWeather } from "@/features/weather/forecast/getCurrentWeather";
+import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
 
 import { subscriptions } from "@/store/weather/subscriptions";
 
 import { isSubscriptionTime } from "@/utils/isSubscriptionTime";
 
-export async function sendWeatherNotifications(api: Api<RawApi>) {
-  if (subscriptions.length === 0) return;
-  const currentDate = new Date();
-
+export async function sendWeatherNotifications(api: Api<RawApi>, date: Date) {
   for (const subscription of subscriptions) {
     const { userID, city, time } = subscription;
-    if (!isSubscriptionTime(time, currentDate)) continue;
+    if (!isSubscriptionTime(time, date)) continue;
 
     const weatherData = await getCurrentWeather(city);
     if (typeof weatherData === "string") {
