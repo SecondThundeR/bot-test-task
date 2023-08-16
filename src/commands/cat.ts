@@ -4,14 +4,16 @@ import { LOCALE } from "@/constants/locale";
 
 import { getRandomCat } from "@/features/cat/getRandomCat";
 
+import { isEmptyObject } from "@/utils/isEmptyObject";
+
 export const cat = new Composer();
 
 cat.command("cat", async (ctx) => {
   const catData = await getRandomCat();
-  if (!catData || catData.length === 0) {
-    return ctx.reply(LOCALE.cat.noData);
-  }
+  if (isEmptyObject(catData)) return ctx.reply(LOCALE.cat.noData);
 
-  const catURL = catData[0].url;
+  const catURL = catData.at(0)?.url;
+  if (!catURL) return ctx.reply(LOCALE.cat.noData);
+
   return ctx.replyWithPhoto(catURL);
 });
