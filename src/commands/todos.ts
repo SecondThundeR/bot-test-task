@@ -2,9 +2,9 @@ import { Composer } from "grammy";
 
 import { LOCALE } from "@/constants/locale";
 
-import { todosMenu } from "@/menus/todosMenu";
+import { setTodoSessionData } from "@/features/todos/setTodoSessionData";
 
-import { getUserTodos } from "@/store/user/todos";
+import { todosMenu } from "@/menus/todosMenu";
 
 import { type BotContext } from "@/types/bot";
 
@@ -14,14 +14,7 @@ todos.command("todos", async (ctx) => {
   const userID = ctx.from?.id;
   if (!userID) return ctx.reply(LOCALE.general.noUserID);
 
-  ctx.session.currentOffset = 0;
-  ctx.session.selectedTodo = null;
-
-  const todos = getUserTodos(userID);
-  if (todos) {
-    ctx.session.currentTodoList = todos;
-  }
-
+  setTodoSessionData(ctx, userID);
   await ctx.reply(LOCALE.todos.messageText, {
     reply_markup: todosMenu,
     parse_mode: "MarkdownV2",
