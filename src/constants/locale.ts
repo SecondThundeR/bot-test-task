@@ -48,6 +48,10 @@ export const LOCALE = {
     successfullyUpdated: "Successfully updated todo text!",
     messageText: "*Todos menu*\nCreate, update and navigate through your todos",
     markAs: (done: boolean) => `Mark as ${done ? "undone" : "done"}`,
+    notificationHeader: (multiple: boolean) =>
+      `<b>Here ${
+        multiple ? "are todos" : "is todo"
+      }, that you set for notification</b>\n`,
   },
   menu: {
     selected: "Selected: ",
