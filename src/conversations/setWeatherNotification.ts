@@ -11,7 +11,7 @@ import { type BotContext, type BotConversation } from "@/types/bot";
 import { checkTimeFormat } from "@/utils/checkTimeFormat";
 import { hasCommandEntities } from "@/utils/hasCommandEntities";
 
-export async function weatherNotifyConversation(
+export async function setWeatherNotification(
   conversation: BotConversation,
   ctx: BotContext,
 ) {

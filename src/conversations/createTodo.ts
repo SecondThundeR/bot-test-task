@@ -5,7 +5,7 @@ import { createNewTodo } from "@/features/todos/createNewTodo";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-export async function createTodoConversation(
+export async function createTodo(
   conversation: BotConversation,
   ctx: BotContext,
 ) {

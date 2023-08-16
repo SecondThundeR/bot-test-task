@@ -1,5 +1,6 @@
 import { Menu } from "@grammyjs/menu";
 
+import { UPDATE_TODO_TEXT } from "@/constants/conversationIds";
 import { LOCALE } from "@/constants/locale";
 import { OFFSET_STEP } from "@/constants/offsetStep";
 
@@ -13,7 +14,7 @@ export const todoMenu = new Menu<BotContext>("todo-menu")
   .row()
   .text(LOCALE.menu.updateText, async (ctx) => {
     await ctx.deleteMessage();
-    await ctx.conversation.enter("updateTodoConversation");
+    await ctx.conversation.enter(UPDATE_TODO_TEXT);
   })
   .text(
     (ctx) => {

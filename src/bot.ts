@@ -18,10 +18,10 @@ import { weatherReset } from "@/commands/weatherReset";
 import { COMMANDS_DATA } from "@/constants/commandsData";
 import { LOCALE } from "@/constants/locale";
 
-import { createTodoConversation } from "@/conversations/createTodoConversation";
-import { updateTodoConversation } from "@/conversations/updateTodoConversation";
-import { weatherConversation } from "@/conversations/weatherConversation";
-import { weatherNotifyConversation } from "@/conversations/weatherNotifyConversation";
+import { createTodo } from "@/conversations/createTodo";
+import { getWeather } from "@/conversations/getWeather";
+import { setWeatherNotification } from "@/conversations/setWeatherNotification";
+import { updateTodoText } from "@/conversations/updateTodoText";
 
 import { errorHandler } from "@/handlers/bot/errorHandler";
 import { onStartHandler } from "@/handlers/bot/onStartHandler";
@@ -92,10 +92,10 @@ pm.use(
 );
 
 pm.use(conversations());
-pm.use(createConversation(weatherConversation));
-pm.use(createConversation(weatherNotifyConversation));
-pm.use(createConversation(createTodoConversation));
-pm.use(createConversation(updateTodoConversation));
+pm.use(createConversation(createTodo));
+pm.use(createConversation(getWeather));
+pm.use(createConversation(setWeatherNotification));
+pm.use(createConversation(updateTodoText));
 
 pm.use(todosMenu);
 

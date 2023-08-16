@@ -7,7 +7,7 @@ import { type BotContext, type BotConversation } from "@/types/bot";
 
 import { hasCommandEntities } from "@/utils/hasCommandEntities";
 
-export async function weatherConversation(
+export async function getWeather(
   conversation: BotConversation,
   ctx: BotContext,
 ) {
