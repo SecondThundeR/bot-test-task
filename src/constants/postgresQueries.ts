@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS "userTodos" (
   "userID" INTEGER NOT NULL,
   "text" VARCHAR(200) NOT NULL,
   "done" BOOLEAN NOT NULL,
+  "date" VARCHAR(10),
+  "time" VARCHAR(5),
   PRIMARY KEY ("id")
 );` as const;
 
@@ -30,6 +32,8 @@ export const UPDATE_USER_TODO_TEXT =
   'UPDATE "userTodos" SET "text" = $1 WHERE "id" = $2;' as const;
 export const UPDATE_USER_TODO_DONE =
   'UPDATE "userTodos" SET "done" = $1 WHERE "id" = $2;' as const;
+export const RESET_USER_TODO_NOTIFICATION =
+  'UPDATE "userTodos" SET "date" = NULL, "time" = NULL WHERE "id" = $1;' as const;
 export const REMOVE_USER_TODO =
   'DELETE FROM "userTodos" WHERE "id" = $1;' as const;
 export const REMOVE_USER_TODOS =
