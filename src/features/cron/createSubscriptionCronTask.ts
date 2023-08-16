@@ -1,10 +1,13 @@
 import { type Api } from "grammy";
 import cron from "node-cron";
 
-import { sendWeatherNotifications } from "@/features/weather/notify/sendWeatherNotifications";
+import { sendTodosNotifications } from "@/features/todos/sendTodosNotifications";
+import { sendWeatherNotifications } from "@/features/weather/sendWeatherNotifications";
 
 export function createSubscriptionCronTask(api: Api) {
   cron.schedule("* * * * *", async () => {
-    await sendWeatherNotifications(api);
+    const currentDate = new Date();
+    await sendWeatherNotifications(api, currentDate);
+    await sendTodosNotifications(api, currentDate);
   });
 }
