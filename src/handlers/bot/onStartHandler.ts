@@ -2,10 +2,10 @@ import { type Bot } from "grammy";
 import { type UserFromGetMe } from "grammy/types";
 import { type Client } from "pg";
 
-import { type BotContext } from "@/types/bot";
+import { createSubscriptionCronTask } from "@/features/cron/createSubscriptionCronTask";
+import { postgresSetup } from "@/features/postgres/postgresSetup";
 
-import { createSubscriptionCronTask } from "@/utils/createSubscriptionCronTask";
-import { postgresSetup } from "@/utils/postgresSetup";
+import { type BotContext } from "@/types/bot";
 
 export async function onStartHandler(
   bot: Bot<BotContext>,
