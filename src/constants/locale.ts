@@ -1,5 +1,9 @@
 import { COMMANDS_DATA } from "@/constants/commandsData";
 
+import { type TodoEntry } from "@/store/user/todos";
+
+import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+
 const COMMANDS_LIST = COMMANDS_DATA.map(
   (commandData) => `/${commandData.command} - ${commandData.description}`,
 );
@@ -44,14 +48,21 @@ export const LOCALE = {
     noTodo: "Cannot update text as there is no selected todo",
     enterText: "Enter text for new todo",
     enterNewText: "Enter new text for new todo",
+    enterNotificationDate:
+      "Enter date when you want to be notified in format, like `12.09.2023 14:55`",
     successfullyCreated: "Successfully created new todo!",
     successfullyUpdated: "Successfully updated todo text!",
+    successfullySetNotification: "Successfully set notification for your todo!",
     messageText: "*Todos menu*\nCreate, update and navigate through your todos",
     markAs: (done: boolean) => `Mark as ${done ? "undone" : "done"}`,
     notificationHeader: (multiple: boolean) =>
       `<b>Here ${
         multiple ? "are todos" : "is todo"
       }, that you set for notification</b>\n`,
+    manageNotificationText: (todo: TodoEntry) =>
+      isTodoNotificationSet(todo)
+        ? `Remove notification (${todo.date} ${todo.time})`
+        : "Set notification",
   },
   menu: {
     selected: "Selected: ",

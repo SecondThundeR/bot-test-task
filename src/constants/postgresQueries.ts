@@ -25,13 +25,16 @@ export const SET_WEATHER_NOTIFICATION =
 export const REMOVE_WEATHER_NOTIFICATION =
   'DELETE FROM "weatherNotify" WHERE "userID" = $1;' as const;
 
-export const GET_USERS_TODOS = 'SELECT * FROM "userTodos"' as const;
+export const GET_USERS_TODOS =
+  'SELECT * FROM "userTodos" ORDER BY "id"' as const;
 export const SET_USER_TODO =
   'INSERT INTO "userTodos"("userID", "text", "done") VALUES($1, $2, $3) RETURNING *;' as const;
 export const UPDATE_USER_TODO_TEXT =
   'UPDATE "userTodos" SET "text" = $1 WHERE "id" = $2;' as const;
 export const UPDATE_USER_TODO_DONE =
   'UPDATE "userTodos" SET "done" = $1 WHERE "id" = $2;' as const;
+export const UPDATE_USER_TODO_NOTIFICATION =
+  'UPDATE "userTodos" SET "date" = $1, "time" = $2 WHERE "id" = $3;' as const;
 export const RESET_USER_TODO_NOTIFICATION =
   'UPDATE "userTodos" SET "date" = NULL, "time" = NULL WHERE "id" = $1;' as const;
 export const REMOVE_USER_TODO =
