@@ -18,10 +18,6 @@ export function hasSubscriptionData(userID: number) {
   );
 }
 
-export function getSubscriptionData(userID: number) {
-  return subscriptions.find((subscription) => subscription.userID === userID);
-}
-
 export function setSubscriptionData(
   userID: number,
   city: string,

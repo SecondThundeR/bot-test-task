@@ -22,7 +22,7 @@ export function initTodosData(initTodos: DBTodo[]) {
   const initData: Todo = new Map();
   for (const todo of initTodos) {
     const { userID, ...rest } = todo;
-    initData.set(userID, [...(initData.get(userID) ?? []), rest]);
+    initData.set(userID, [rest]);
   }
   todos = initData;
 }
@@ -39,9 +39,8 @@ export function insertTodoData(id: number, userID: number, text: string) {
 
   const newTodo: TodoEntry = { id, text, done: false, date: null, time: null };
   const userTodos = todos.get(userID);
-  if (!userTodos) {
-    return todos.set(userID, [newTodo]);
-  }
+  if (!userTodos) return todos.set(userID, [newTodo]);
+
   return todos.set(userID, [...userTodos, newTodo]);
 }
 
@@ -59,7 +58,6 @@ export function updateTodoData(
   if (todoIndex == -1) return;
 
   const updatedTodoData = userTodos[todoIndex];
-
   const { text, done, date, time } = updateData;
 
   if (text) {
@@ -67,7 +65,7 @@ export function updateTodoData(
       text.length <= TODOS_NAME_MAX_LENGTH ? text : updatedTodoData.text;
     updatedTodoData.text = updatedText;
   }
-  if (done) updatedTodoData.done = done;
+  if (done !== undefined) updatedTodoData.done = done;
   if (date && time) {
     updatedTodoData.date = date;
     updatedTodoData.time = time;
