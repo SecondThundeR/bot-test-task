@@ -5,10 +5,10 @@ import { LOCALE } from "@/constants/locale";
 
 export function extractErrorDetails(
   error: unknown,
-  failedRequestMessage: string,
+  failedRequestMessage?: string,
 ) {
   if (error instanceof AxiosError) {
-    return failedRequestMessage;
+    return failedRequestMessage ?? LOCALE.general.axiosGenericMessage;
   }
   if (error instanceof ZodError) {
     return LOCALE.general.failedParse;
