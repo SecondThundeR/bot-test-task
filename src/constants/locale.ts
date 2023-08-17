@@ -54,6 +54,9 @@ export const LOCALE = {
     successfullyUpdated: "Successfully updated todo text!",
     successfullySetNotification: "Successfully set notification for your todo!",
     messageText: "*Todos menu*\nCreate, update and navigate through your todos",
+    lastPageAlert: "You are already on the last page!",
+    firstPageAlert: "You are already on the first page!",
+    manipulateError: "There is an error, while trying to manipulate todo!",
     markAs: (done: boolean) => `Mark as ${done ? "undone" : "done"}`,
     notificationHeader: (multiple: boolean) =>
       `<b>Here ${
@@ -63,9 +66,22 @@ export const LOCALE = {
       isTodoNotificationSet(todo)
         ? `Remove notification (${todo.date} ${todo.time})`
         : "Set notification",
+    todoElementText: (
+      index: number,
+      text: string,
+      hasNotification: boolean,
+      isDone: boolean,
+    ) =>
+      `${index + 1}. ${text}${hasNotification ? " (🔔)" : ""}${
+        isDone ? " ✅" : ""
+      }`,
   },
   menu: {
     selected: "Selected: ",
+    selectedDetails: (text: string | undefined) =>
+      `You are currently inspecting ${
+        text ? `todo "${text}"` : "unknown todo"
+      } `,
     updateText: "Update text",
     delete: "Delete",
     goBack: "Go back",
