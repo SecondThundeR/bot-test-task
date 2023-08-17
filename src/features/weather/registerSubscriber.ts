@@ -1,3 +1,4 @@
+import { LOCALE } from "@/constants/locale";
 import { SET_WEATHER_NOTIFICATION } from "@/constants/postgresQueries";
 
 import { setSubscriptionData } from "@/store/weather/subscriptions";
@@ -14,7 +15,7 @@ export async function registerSubscriber(
     setSubscriptionData(userID, city, time);
   } catch (error: unknown) {
     console.error(
-      "Failed to register a subscriber. More details:",
+      LOCALE.weatherNotify.subscribeFailed,
       (error as Error).message,
     );
   }

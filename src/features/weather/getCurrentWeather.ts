@@ -20,6 +20,6 @@ export async function getCurrentWeather(city: string) {
     });
     return WeatherResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
-    return extractErrorDetails(error, LOCALE.weather.failedFetch);
+    throw new Error(extractErrorDetails(error, LOCALE.weather.failedFetch));
   }
 }

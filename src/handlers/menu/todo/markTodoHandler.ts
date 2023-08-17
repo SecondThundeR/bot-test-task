@@ -19,8 +19,15 @@ export async function markTodoHandler(ctx: MenuBotContext) {
   await ctx.answerCallbackQuery();
 
   const newTodoStatus = !todoStatus;
-  await updateTodoDone(todoID, userID, newTodoStatus);
+  try {
+    await updateTodoDone(todoID, userID, newTodoStatus);
+    await ctx.answerCallbackQuery();
 
-  ctx.session.selectedTodo!.done = newTodoStatus;
-  ctx.menu.update();
+    ctx.session.selectedTodo!.done = newTodoStatus;
+    return ctx.menu.update();
+  } catch (error: unknown) {
+    return ctx.answerCallbackQuery({
+      text: (error as Error).message,
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import { LOCALE } from "@/constants/locale";
 import { REMOVE_WEATHER_NOTIFICATION } from "@/constants/postgresQueries";
 
 import { deleteSubscriptionData } from "@/store/weather/subscriptions";
@@ -10,7 +11,7 @@ export async function removeSubscriber(userID: number) {
     deleteSubscriptionData(userID);
   } catch (error: unknown) {
     console.error(
-      "Failed to remove a subscriber. More details:",
+      LOCALE.weatherNotify.unsubscribeFailed,
       (error as Error).message,
     );
   }

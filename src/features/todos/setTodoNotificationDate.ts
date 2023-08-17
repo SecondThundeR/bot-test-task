@@ -13,6 +13,7 @@ export async function setTodoNotificationDate(
 ) {
   if (!isValidDate(text))
     throw new Error("Incorrect date was provided, try again!");
+
   const [date, time] = text.split(" ");
   await postgres.query(UPDATE_USER_TODO_NOTIFICATION, [date, time, id]);
   updateTodoData(id, userID, { date, time });

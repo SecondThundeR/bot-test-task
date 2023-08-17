@@ -76,12 +76,19 @@ export async function setWeatherNotification(
 
     const { msg: cityMessage } = message;
     if (!hasCommandEntities(cityMessage)) {
-      const weatherData = await conversation.external(() =>
-        getCurrentWeather(cityMessage.text),
-      );
-      if (weatherData && typeof weatherData !== "string") {
-        subscriptionCity = cityMessage.text;
-        break;
+      try {
+        const weatherData = await conversation.external(() =>
+          getCurrentWeather(cityMessage.text),
+        );
+        if (weatherData) {
+          subscriptionCity = cityMessage.text;
+          break;
+        }
+      } catch (error: unknown) {
+        console.error(
+          LOCALE.weatherNotify.conversationError,
+          (error as Error).message,
+        );
       }
     }
 

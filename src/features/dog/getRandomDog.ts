@@ -18,6 +18,6 @@ export async function getRandomDog() {
     });
     return CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
-    extractErrorDetails(error, LOCALE.dog.failedFetch);
+    throw new Error(extractErrorDetails(error, LOCALE.dog.failedFetch));
   }
 }

@@ -9,11 +9,16 @@ import { isEmptyObject } from "@/utils/general/isEmptyObject";
 export const dog = new Composer();
 
 dog.command("dog", async (ctx) => {
-  const dogData = await getRandomDog();
-  if (isEmptyObject(dogData)) return ctx.reply(LOCALE.dog.noData);
+  try {
+    const dogData = await getRandomDog();
 
-  const dogURL = dogData.at(0)?.url;
-  if (!dogURL) return ctx.reply(LOCALE.dog.noData);
+    if (isEmptyObject(dogData)) return ctx.reply(LOCALE.dog.noData);
 
-  return ctx.replyWithPhoto(dogURL);
+    const dogURL = dogData.at(0)?.url;
+    if (!dogURL) return ctx.reply(LOCALE.dog.noData);
+
+    return ctx.replyWithPhoto(dogURL);
+  } catch (error: unknown) {
+    return ctx.reply((error as Error).message);
+  }
 });

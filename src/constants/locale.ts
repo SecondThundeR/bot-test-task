@@ -33,6 +33,10 @@ export const LOCALE = {
       `You have been subscribed successfully\\! You will recieve your daily forecasts for "${city}" at "${time}"`,
     successfullyUnsubscribed:
       "You have been unsubscribed successfully! You won't recieve your daily forecasts anymore",
+    subscribeFailed: "Failed to register a subscriber. More details:",
+    unsubscribeFailed: "Failed to remove a subscriber. More details:",
+    subscriptionSendFailed: "Failed to send weather details. More details:",
+    conversationError: "Conversation error:",
   },
   cat: {
     noData:
@@ -99,5 +103,6 @@ export const LOCALE = {
       "You are sending too many requests! Please wait before sending new one",
     failedConversation:
       "Looks like you have problems filling in the necessary data. Try again or contact developer if you think this is not your issue",
+    axiosGenericMessage: "Axios request failed",
   },
 } as const;

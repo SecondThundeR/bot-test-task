@@ -18,6 +18,6 @@ export async function getRandomCat() {
     });
     return CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
-    extractErrorDetails(error, LOCALE.cat.failedFetch);
+    throw new Error(extractErrorDetails(error, LOCALE.cat.failedFetch));
   }
 }

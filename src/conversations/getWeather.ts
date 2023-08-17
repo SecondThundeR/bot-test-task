@@ -40,20 +40,22 @@ export async function getWeather(
     await ctx.reply(LOCALE.weather.nonText);
   }
 
-  const weatherData = await conversation.external(() =>
-    getCurrentWeather(cityName),
-  );
-  if (!weatherData) {
-    return ctx.reply(LOCALE.weather.noData);
-  }
-  if (typeof weatherData === "string") {
-    return ctx.reply(weatherData);
-  }
+  try {
+    const weatherData = await conversation.external(() =>
+      getCurrentWeather(cityName),
+    );
 
-  const { condition, temp_c } = weatherData.current;
-  const { name } = weatherData.location;
+    if (!weatherData) {
+      return ctx.reply(LOCALE.weather.noData);
+    }
 
-  return ctx.reply(LOCALE.weather.result(name, condition.text, temp_c), {
-    parse_mode: "HTML",
-  });
+    const { condition, temp_c } = weatherData.current;
+    const { name } = weatherData.location;
+
+    return ctx.reply(LOCALE.weather.result(name, condition.text, temp_c), {
+      parse_mode: "HTML",
+    });
+  } catch (error: unknown) {
+    return ctx.reply((error as Error).message);
+  }
 }
