@@ -15,7 +15,6 @@ import { weather } from "@/commands/weather";
 import { weatherNotify } from "@/commands/weatherNotify";
 import { weatherReset } from "@/commands/weatherReset";
 
-import { COMMANDS_DATA } from "@/constants/commandsData";
 import { LOCALE } from "@/constants/locale";
 
 import { createTodo } from "@/conversations/createTodo";
@@ -51,22 +50,6 @@ export const postgres = new Client({
 
 const bot = new Bot<BotContext>(env.BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
-
-bot.api
-  .setMyCommands(COMMANDS_DATA, {
-    scope: {
-      type: "all_private_chats",
-    },
-  })
-  .catch(console.error);
-
-bot.api
-  .setMyCommands([], {
-    scope: {
-      type: "all_group_chats",
-    },
-  })
-  .catch(console.error);
 
 bot.use(
   limit({
