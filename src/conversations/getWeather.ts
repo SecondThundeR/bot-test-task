@@ -5,7 +5,7 @@ import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-import { hasCommandEntities } from "@/utils/hasCommandEntities";
+import { hasCommandEntities } from "@/utils/grammy/hasCommandEntities";
 
 export async function getWeather(
   conversation: BotConversation,

@@ -5,7 +5,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { CatResponseSchema } from "@/schemas/cat/catSchema";
 
-import { processError } from "@/utils/processError";
+import { extractErrorDetails } from "@/utils/error/extractErrorDetails";
 
 import { env } from "@/env";
 
@@ -18,6 +18,6 @@ export async function getRandomDog() {
     });
     return CatResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
-    processError(error, LOCALE.dog.failedFetch);
+    extractErrorDetails(error, LOCALE.dog.failedFetch);
   }
 }

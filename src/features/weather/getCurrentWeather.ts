@@ -5,7 +5,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { WeatherResponseSchema } from "@/schemas/weather/weatherSchema";
 
-import { processError } from "@/utils/processError";
+import { extractErrorDetails } from "@/utils/error/extractErrorDetails";
 
 import { env } from "@/env";
 
@@ -20,6 +20,6 @@ export async function getCurrentWeather(city: string) {
     });
     return WeatherResponseSchema.parseAsync(res.data);
   } catch (error: unknown) {
-    return processError(error, LOCALE.weather.failedFetch);
+    return extractErrorDetails(error, LOCALE.weather.failedFetch);
   }
 }

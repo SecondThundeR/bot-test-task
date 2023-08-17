@@ -4,7 +4,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { getRandomDog } from "@/features/dog/getRandomDog";
 
-import { isEmptyObject } from "@/utils/isEmptyObject";
+import { isEmptyObject } from "@/utils/general/isEmptyObject";
 
 export const dog = new Composer();
 

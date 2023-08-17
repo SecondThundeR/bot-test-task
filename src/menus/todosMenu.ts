@@ -6,7 +6,7 @@ import { OFFSET_STEP } from "@/constants/offsetStep";
 
 import { type BotContext } from "@/types/bot";
 
-import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
 
 import { todoMenu } from "./todoMenu";
 

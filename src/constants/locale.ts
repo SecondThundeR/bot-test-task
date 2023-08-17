@@ -2,7 +2,7 @@ import { COMMANDS_DATA } from "@/constants/commandsData";
 
 import { type TodoEntry } from "@/store/user/todos";
 
-import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
 
 const COMMANDS_LIST = COMMANDS_DATA.map(
   (commandData) => `/${commandData.command} - ${commandData.description}`,

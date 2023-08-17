@@ -13,7 +13,7 @@ import { updateTodoDone } from "@/features/todos/updateTodoDone";
 
 import { type BotContext } from "@/types/bot";
 
-import { isTodoNotificationSet } from "@/utils/isTodoNotificationSet";
+import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
 
 export const todoMenu = new Menu<BotContext>("todo-menu")
   .text((ctx) => `${LOCALE.menu.selected}${ctx.session.selectedTodo!.text}`)

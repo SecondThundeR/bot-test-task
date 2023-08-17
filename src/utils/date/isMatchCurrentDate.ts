@@ -1,4 +1,6 @@
-export function isNotificationTime(
+import { isMatchCurrentTime } from "@/utils/date/isMatchCurrentTime";
+
+export function isMatchCurrentDate(
   date: string | null,
   time: string | null,
   currentDate: Date,
@@ -11,8 +13,5 @@ export function isNotificationTime(
     year === currentDate.getFullYear();
   if (!isValidDate) return false;
 
-  const [hours, minutes] = time.split(":").map(Number);
-  return (
-    hours === currentDate.getHours() && minutes === currentDate.getMinutes()
-  );
+  return isMatchCurrentTime(time, currentDate);
 }

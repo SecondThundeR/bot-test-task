@@ -2,7 +2,7 @@ import moment from "moment";
 
 const DATE_FORMAT = "DD.MM.YYYY HH:mm";
 
-export function isValidNotificationDate(date?: string) {
+export function isValidDate(date?: string) {
   if (!date) return false;
 
   const parsedDate = moment(date, DATE_FORMAT);

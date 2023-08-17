@@ -4,7 +4,7 @@ import { LOCALE } from "@/constants/locale";
 
 import { getRandomCat } from "@/features/cat/getRandomCat";
 
-import { isEmptyObject } from "@/utils/isEmptyObject";
+import { isEmptyObject } from "@/utils/general/isEmptyObject";
 
 export const cat = new Composer();
 

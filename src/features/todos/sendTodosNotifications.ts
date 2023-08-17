@@ -6,7 +6,7 @@ import { resetTodoNotificationDate } from "@/features/todos/resetTodoNotificatio
 
 import { todos, type TodoEntry } from "@/store/user/todos";
 
-import { isNotificationTime } from "@/utils/isNotificationTime";
+import { isMatchCurrentDate } from "@/utils/date/isMatchCurrentDate";
 
 export async function sendTodosNotifications(api: Api<RawApi>, date: Date) {
   const todosData = todos.entries();
@@ -21,7 +21,7 @@ export async function sendTodosNotifications(api: Api<RawApi>, date: Date) {
 
     const notificationTexts: string[] = [];
     for (const todo of notificationTodos) {
-      if (!isNotificationTime(todo.date, todo.time, date)) continue;
+      if (!isMatchCurrentDate(todo.date, todo.time, date)) continue;
 
       notificationTexts.push(todo.text);
       resetTodoNotificationDate(todo.id, userID).catch(console.error);

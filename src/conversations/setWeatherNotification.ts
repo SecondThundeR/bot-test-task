@@ -8,8 +8,8 @@ import { hasSubscriptionData } from "@/store/weather/subscriptions";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
-import { checkTimeFormat } from "@/utils/checkTimeFormat";
-import { hasCommandEntities } from "@/utils/hasCommandEntities";
+import { isValidTime } from "@/utils/date/isValidTime";
+import { hasCommandEntities } from "@/utils/grammy/hasCommandEntities";
 
 export async function setWeatherNotification(
   conversation: BotConversation,
@@ -46,7 +46,7 @@ export async function setWeatherNotification(
     if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
 
     const { msg: timeMessage } = message;
-    if (!hasCommandEntities(timeMessage) && checkTimeFormat(timeMessage.text)) {
+    if (!hasCommandEntities(timeMessage) && isValidTime(timeMessage.text)) {
       subscriptionTime = timeMessage.text;
       break;
     }
