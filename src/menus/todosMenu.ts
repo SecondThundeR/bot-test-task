@@ -17,6 +17,7 @@ import { todoMenu } from "./todoMenu";
 export const todosMenu = new Menu<BotContext>("todos-menu", {
   fingerprint: fingerprintHandler,
   onMenuOutdated: onMenuOutdatedHandler,
+  autoAnswer: false,
 })
   .dynamic(dynamicTodoListHandler)
   .row()

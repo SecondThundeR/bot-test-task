@@ -1,10 +1,13 @@
 import { type MenuRange } from "@grammyjs/menu";
 
+import { LOCALE } from "@/constants/locale";
 import { OFFSET_STEP } from "@/constants/offsetStep";
 
 import { type BotContext } from "@/types/bot";
 
 import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
+
+import { todoElementHandler } from "./todoElementHandler";
 
 export function dynamicTodoListHandler(
   ctx: BotContext,
@@ -24,13 +27,8 @@ export function dynamicTodoListHandler(
 
     range
       .text(
-        `${index + 1}. ${text}${hasNotification ? " (🔔)" : ""}${
-          done ? " ✅" : ""
-        }`,
-        (ctx) => {
-          ctx.session.selectedTodo = todo;
-          ctx.menu.nav("todo-menu");
-        },
+        LOCALE.todos.todoElementText(index, text, hasNotification, done),
+        async (ctx) => await todoElementHandler(ctx, todo),
       )
       .row();
   }

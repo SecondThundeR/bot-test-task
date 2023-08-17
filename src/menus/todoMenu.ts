@@ -8,13 +8,16 @@ import { markTodoHandler } from "@/handlers/menu/todo/markTodoHandler";
 import { markTodoTextHandler } from "@/handlers/menu/todo/markTodoTextHandler";
 import { notificationTodoHandler } from "@/handlers/menu/todo/notificationTodoHandler";
 import { notificationTodoTextHandler } from "@/handlers/menu/todo/notificationTodoTextHandler";
+import { selectedTodoHandler } from "@/handlers/menu/todo/selectedTodoHandler";
 import { selectedTodoTextHandler } from "@/handlers/menu/todo/selectedTodoTextHandler";
 import { updateTextHandler } from "@/handlers/menu/todo/updateTextHandler";
 
 import { type BotContext } from "@/types/bot";
 
-export const todoMenu = new Menu<BotContext>("todo-menu")
-  .text(selectedTodoTextHandler)
+export const todoMenu = new Menu<BotContext>("todo-menu", {
+  autoAnswer: false,
+})
+  .text(selectedTodoTextHandler, selectedTodoHandler)
   .row()
   .text(notificationTodoTextHandler, notificationTodoHandler)
   .row()

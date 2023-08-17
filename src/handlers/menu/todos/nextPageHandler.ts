@@ -1,15 +1,23 @@
-import { type MenuFlavor } from "@grammyjs/menu";
-
+import { LOCALE } from "@/constants/locale";
 import { OFFSET_STEP } from "@/constants/offsetStep";
 
-import { type BotContext } from "@/types/bot";
+import { type MenuBotContext } from "@/types/bot";
 
-export function nextPageHandler(ctx: BotContext & MenuFlavor) {
-  if (!ctx.session.currentTodoList) return;
+export async function nextPageHandler(ctx: MenuBotContext) {
+  if (!ctx.session.currentTodoList)
+    return ctx.answerCallbackQuery({
+      text: LOCALE.todos.lastPageAlert,
+      show_alert: true,
+    });
 
   const newOffset = ctx.session.currentOffset + OFFSET_STEP;
-  if (newOffset >= ctx.session.currentTodoList.length) return;
+  if (newOffset >= ctx.session.currentTodoList.length)
+    return ctx.answerCallbackQuery({
+      text: LOCALE.todos.lastPageAlert,
+      show_alert: true,
+    });
 
+  await ctx.answerCallbackQuery();
   ctx.session.currentOffset = newOffset;
   ctx.menu.update();
 }
