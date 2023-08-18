@@ -24,7 +24,8 @@ export function initTodosData(initTodos: DBTodo[]) {
   const initData: Todo = new Map();
   for (const todo of initTodos) {
     const { userID, ...rest } = todo;
-    initData.set(userID, [rest]);
+    const userTodos = initData.get(userID) ?? [];
+    initData.set(userID, [...userTodos, rest]);
   }
   todos = initData;
 }
