@@ -3,7 +3,6 @@ import "dotenv/config";
 import { Bot, session } from "grammy";
 import { conversations, createConversation } from "@grammyjs/conversations";
 import { limit } from "@grammyjs/ratelimiter";
-import Redis from "ioredis";
 import { Client } from "pg";
 
 import { cat } from "@/commands/cat";
@@ -33,13 +32,6 @@ import { type BotContext } from "@/types/bot";
 
 import { env } from "@/env";
 
-const redis = new Redis({
-  port: env.REDISPORT,
-  host: env.REDISHOST,
-  username: env.REDISUSER,
-  password: env.REDISPASSWORD,
-});
-
 export const postgres = new Client({
   host: env.PGHOST,
   port: env.PGPORT,
@@ -51,11 +43,10 @@ export const postgres = new Client({
 const bot = new Bot<BotContext>(env.BOT_TOKEN);
 const pm = bot.filter((ctx) => ctx.chat?.type === "private");
 
-bot.use(
+pm.use(
   limit({
     timeFrame: 2000,
     limit: 3,
-    storageClient: redis,
     onLimitExceeded: async (ctx) => {
       await ctx.reply(LOCALE.general.hitRateLimit);
     },

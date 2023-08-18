@@ -6,10 +6,6 @@ export const env = createEnv({
     BOT_TOKEN: z.string().length(46, {
       message: "Bot token should have length of 46 characters",
     }),
-    REDISHOST: z.string(),
-    REDISPASSWORD: z.string(),
-    REDISPORT: z.number(),
-    REDISUSER: z.string(),
     PGDATABASE: z.string(),
     PGHOST: z.string(),
     PGPASSWORD: z.string(),
@@ -21,10 +17,6 @@ export const env = createEnv({
   },
   runtimeEnv: {
     BOT_TOKEN: process.env.BOT_TOKEN,
-    REDISHOST: process.env.REDISHOST,
-    REDISPASSWORD: process.env.REDISPASSWORD,
-    REDISPORT: Number(process.env.REDISPORT),
-    REDISUSER: process.env.REDISUSER,
     PGDATABASE: process.env.PGDATABASE,
     PGHOST: process.env.PGHOST,
     PGPASSWORD: process.env.PGPASSWORD,
