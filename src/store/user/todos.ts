@@ -1,3 +1,5 @@
+import { LOCALE } from "@/constants/locale";
+
 export interface TodoEntry {
   id: number;
   text: string;
@@ -16,7 +18,7 @@ export type Todo = Map<number, TodoEntry[]>;
 
 export let todos: Todo = new Map();
 
-const TODOS_NAME_MAX_LENGTH = 200;
+export const TODOS_NAME_MAX_LENGTH = 200;
 
 export function initTodosData(initTodos: DBTodo[]) {
   const initData: Todo = new Map();
@@ -33,9 +35,7 @@ export function getUserTodos(userID: number) {
 
 export function insertTodoData(id: number, userID: number, text: string) {
   if (text.length > TODOS_NAME_MAX_LENGTH)
-    throw new Error(
-      `Task text is more than ${TODOS_NAME_MAX_LENGTH} characters`,
-    );
+    throw new Error(LOCALE.todos.longText);
 
   const newTodo: TodoEntry = { id, text, done: false, date: null, time: null };
   const userTodos = todos.get(userID);

@@ -1,6 +1,7 @@
 import { COMMANDS_DATA } from "@/constants/commandsData";
 
 import { type TodoEntry } from "@/store/user/todos";
+import { TODOS_NAME_MAX_LENGTH, type TodoEntry } from "@/store/user/todos";
 
 import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
 
@@ -61,6 +62,7 @@ export const LOCALE = {
     lastPageAlert: "You are already on the last page!",
     firstPageAlert: "You are already on the first page!",
     manipulateError: "There is an error, while trying to manipulate todo!",
+    longText: `Task text is more than ${TODOS_NAME_MAX_LENGTH} characters`,
     markAs: (done: boolean) => `Mark as ${done ? "undone" : "done"}`,
     notificationHeader: (multiple: boolean) =>
       `<b>Here ${
