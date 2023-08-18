@@ -1,6 +1,5 @@
 import { COMMANDS_DATA } from "@/constants/commandsData";
 
-import { type TodoEntry } from "@/store/user/todos";
 import { TODOS_NAME_MAX_LENGTH, type TodoEntry } from "@/store/user/todos";
 
 import { isTodoNotificationSet } from "@/utils/store/isTodoNotificationSet";
