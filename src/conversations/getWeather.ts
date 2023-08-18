@@ -1,7 +1,8 @@
-import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
 import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
+
+import { failRetryHandler } from "@/handlers/conversation/failRetryHandler";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
@@ -15,34 +16,18 @@ export async function getWeather(
     parse_mode: "MarkdownV2",
   });
 
-  let failedAttempts = 0,
-    cityName: string;
-
-  while (true) {
-    const message = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        await ctx.reply(LOCALE.weather.nonText);
-      },
-    });
-    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
-
-    const { msg } = message;
-    if (!hasCommandEntities(msg)) {
-      cityName = msg.text;
-      break;
-    }
-
-    failedAttempts++;
-
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
-      return ctx.reply(LOCALE.general.failedConversation);
-
-    await ctx.reply(LOCALE.weather.nonText);
-  }
+  const result = await failRetryHandler(ctx, conversation, {
+    otherwiseText: LOCALE.weather.nonText,
+    failText: LOCALE.weather.nonText,
+    onCheck(msg) {
+      return !hasCommandEntities(msg);
+    },
+  });
+  if (result.status === "failed") return;
 
   try {
     const weatherData = await conversation.external(() =>
-      getCurrentWeather(cityName),
+      getCurrentWeather(result.value),
     );
 
     if (!weatherData) {

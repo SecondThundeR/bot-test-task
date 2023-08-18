@@ -1,7 +1,10 @@
-import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
 import { updateTodoText } from "@/features/todos/updateTodoText";
+
+import { failRetryHandler } from "@/handlers/conversation/failRetryHandler";
+
+import { TODOS_NAME_MAX_LENGTH } from "@/store/user/todos";
 
 import { type BotContext, type BotConversation } from "@/types/bot";
 
@@ -23,28 +26,19 @@ export async function setTodoText(
     parse_mode: "MarkdownV2",
   });
 
-  let failedAttempts = 0;
+  const result = await failRetryHandler(ctx, conversation, {
+    otherwiseText: LOCALE.todos.nonText,
+    failText: LOCALE.todos.longText,
+    onCheck(msg) {
+      return msg.text ? msg.text.length <= TODOS_NAME_MAX_LENGTH : false;
+    },
+  });
+  if (result.status === "failed") return;
 
-  while (true) {
-    const message = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        await ctx.reply(LOCALE.weather.nonText);
-      },
-    });
-
-    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
-
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
-      return ctx.reply(LOCALE.general.failedConversation);
-
-    const { msg } = message;
-
-    try {
-      await updateTodoText(todoID, userID, msg.text);
-      return ctx.reply(LOCALE.todos.successfullyUpdated);
-    } catch (error: unknown) {
-      await ctx.reply((error as Error).message);
-      failedAttempts++;
-    }
+  try {
+    await updateTodoText(todoID, userID, result.value);
+    return ctx.reply(LOCALE.todos.successfullyUpdated);
+  } catch (error: unknown) {
+    await ctx.reply((error as Error).message);
   }
 }

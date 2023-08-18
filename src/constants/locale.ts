@@ -51,6 +51,7 @@ export const LOCALE = {
   },
   todos: {
     noTodo: "Cannot update text as there is no selected todo",
+    nonText: "Please provide a text for new todo",
     enterText: "Enter text for new todo",
     enterNewText: "Enter new text for new todo",
     enterNotificationDate:
@@ -62,6 +63,7 @@ export const LOCALE = {
     lastPageAlert: "You are already on the last page!",
     firstPageAlert: "You are already on the first page!",
     manipulateError: "There is an error, while trying to manipulate todo!",
+    incorrectDate: "Incorrect date was provided, try again!",
     longText: `Task text is more than ${TODOS_NAME_MAX_LENGTH} characters`,
     markAs: (done: boolean) => `Mark as ${done ? "undone" : "done"}`,
     notificationHeader: (multiple: boolean) =>
@@ -106,5 +108,7 @@ export const LOCALE = {
     failedConversation:
       "Looks like you have problems filling in the necessary data. Try again or contact developer if you think this is not your issue",
     axiosGenericMessage: "Axios request failed",
+    noCheckProvided:
+      "Please provide one type of check (regular or async) for fail-retry handler",
   },
 } as const;

@@ -1,9 +1,12 @@
-import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
 import { setTodoNotificationDate } from "@/features/todos/setTodoNotificationDate";
 
+import { failRetryHandler } from "@/handlers/conversation/failRetryHandler";
+
 import { type BotContext, type BotConversation } from "@/types/bot";
+
+import { isValidDate } from "@/utils/date/isValidDate";
 
 export async function setTodoNotification(
   conversation: BotConversation,
@@ -26,28 +29,16 @@ export async function setTodoNotification(
     },
   );
 
-  let failedAttempts = 0;
+  const result = await failRetryHandler(ctx, conversation, {
+    otherwiseText: LOCALE.todos.enterNotificationDate,
+    otherwiseParseMode: "MarkdownV2",
+    failText: LOCALE.todos.incorrectDate,
+    onCheck(msg) {
+      return msg.text ? isValidDate(msg.text) : false;
+    },
+  });
+  if (result.status === "failed") return;
 
-  while (true) {
-    const message = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        await ctx.reply(LOCALE.weather.nonText);
-      },
-    });
-
-    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
-
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
-      return ctx.reply(LOCALE.general.failedConversation);
-
-    const { msg } = message;
-
-    try {
-      await setTodoNotificationDate(todoID, userID, msg.text);
-      return ctx.reply(LOCALE.todos.successfullySetNotification);
-    } catch (error: unknown) {
-      await ctx.reply((error as Error).message);
-      failedAttempts++;
-    }
-  }
+  await setTodoNotificationDate(todoID, userID, result.value);
+  return ctx.reply(LOCALE.todos.successfullySetNotification);
 }

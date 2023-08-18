@@ -1,8 +1,9 @@
-import { FAILED_ATTEMPTS_THRESHOLD } from "@/constants/failedAttemptsThreshold";
 import { LOCALE } from "@/constants/locale";
 
 import { getCurrentWeather } from "@/features/weather/getCurrentWeather";
 import { registerSubscriber } from "@/features/weather/registerSubscriber";
+
+import { failRetryHandler } from "@/handlers/conversation/failRetryHandler";
 
 import { hasSubscriptionData } from "@/store/weather/subscriptions";
 
@@ -26,8 +27,6 @@ export async function setWeatherNotification(
     });
   }
 
-  let failedAttempts = 0;
-  let subscriptionTime: string, subscriptionCity: string;
   await ctx.reply(
     `${LOCALE.weatherNotify.subscriptionTimeHelp}\n${LOCALE.general.cancelTip}`,
     {
@@ -35,78 +34,55 @@ export async function setWeatherNotification(
     },
   );
 
-  while (true) {
-    const message = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        await ctx.reply(LOCALE.weatherNotify.subscriptionTimeHelp, {
-          parse_mode: "MarkdownV2",
-        });
-      },
-    });
-    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
+  const subscriptionTimeResult = await failRetryHandler(ctx, conversation, {
+    otherwiseText: LOCALE.weatherNotify.subscriptionTimeHelp,
+    otherwiseParseMode: "MarkdownV2",
+    failText: LOCALE.weatherNotify.incorrectSubscribeTime,
+    failTextParseMode: "MarkdownV2",
+    onCheck(msg) {
+      return msg.text
+        ? !hasCommandEntities(msg) && isValidTime(msg.text)
+        : false;
+    },
+  });
+  if (subscriptionTimeResult.status === "failed") return;
 
-    const { msg: timeMessage } = message;
-    if (!hasCommandEntities(timeMessage) && isValidTime(timeMessage.text)) {
-      subscriptionTime = timeMessage.text;
-      break;
-    }
-
-    failedAttempts++;
-
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
-      return ctx.reply(LOCALE.general.failedConversation);
-
-    await ctx.reply(LOCALE.weatherNotify.incorrectSubscribeTime, {
-      parse_mode: "MarkdownV2",
-    });
-  }
-
-  failedAttempts = 0;
   await ctx.reply(`${LOCALE.weather.enterCity}\n${LOCALE.general.cancelTip}`, {
     parse_mode: "MarkdownV2",
   });
 
-  while (true) {
-    const message = await conversation.waitFor("message:text", {
-      otherwise: async (ctx) => {
-        await ctx.reply(LOCALE.weather.enterCity);
-      },
-    });
-    if (message.hasCommand("cancel")) return ctx.reply(LOCALE.general.canceled);
-
-    const { msg: cityMessage } = message;
-    if (!hasCommandEntities(cityMessage)) {
+  const subscriptionCityResult = await failRetryHandler(ctx, conversation, {
+    otherwiseText: LOCALE.weather.enterCity,
+    failText: LOCALE.weather.nonText,
+    onCheckAsync: async (msg) => {
+      if (!msg.text || hasCommandEntities(msg)) return false;
+      const cityName = msg.text;
       try {
         const weatherData = await conversation.external(() =>
-          getCurrentWeather(cityMessage.text),
+          getCurrentWeather(cityName),
         );
-        if (weatherData) {
-          subscriptionCity = cityMessage.text;
-          break;
-        }
+        if (weatherData) return true;
       } catch (error: unknown) {
         console.error(
           LOCALE.weatherNotify.conversationError,
           (error as Error).message,
         );
       }
-    }
+      return false;
+    },
+  });
+  if (subscriptionCityResult.status === "failed") return;
 
-    failedAttempts++;
-
-    if (failedAttempts >= FAILED_ATTEMPTS_THRESHOLD)
-      return ctx.reply(LOCALE.general.failedConversation);
-
-    await ctx.reply(LOCALE.weather.nonText, {
-      parse_mode: "MarkdownV2",
-    });
-  }
-
-  await registerSubscriber(userID, subscriptionCity, subscriptionTime);
+  const status = await registerSubscriber(
+    userID,
+    subscriptionCityResult.value,
+    subscriptionTimeResult.value,
+  );
+  if (!status) return ctx.reply(LOCALE.weatherNotify.subscribeFailed);
   return ctx.reply(
     LOCALE.weatherNotify.successfullySubscribed(
-      subscriptionCity,
-      subscriptionTime,
+      subscriptionCityResult.value,
+      subscriptionTimeResult.value,
     ),
     {
       parse_mode: "MarkdownV2",
