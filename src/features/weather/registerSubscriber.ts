@@ -13,10 +13,12 @@ export async function registerSubscriber(
   try {
     await postgres.query(SET_WEATHER_NOTIFICATION, [userID, city, time]);
     setSubscriptionData(userID, city, time);
+    return true;
   } catch (error: unknown) {
     console.error(
-      LOCALE.weatherNotify.subscribeFailed,
+      LOCALE.weatherNotify.subscribeFailedDetails,
       (error as Error).message,
     );
   }
+  return false;
 }

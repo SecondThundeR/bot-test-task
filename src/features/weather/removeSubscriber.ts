@@ -11,7 +11,7 @@ export async function removeSubscriber(userID: number) {
     deleteSubscriptionData(userID);
   } catch (error: unknown) {
     console.error(
-      LOCALE.weatherNotify.unsubscribeFailed,
+      LOCALE.weatherNotify.unsubscribeFailedDetails,
       (error as Error).message,
     );
   }

@@ -34,8 +34,9 @@ export const LOCALE = {
       `You have been subscribed successfully\\! You will recieve your daily forecasts for "${city}" at "${time}"`,
     successfullyUnsubscribed:
       "You have been unsubscribed successfully! You won't recieve your daily forecasts anymore",
-    subscribeFailed: "Failed to register a subscriber. More details:",
-    unsubscribeFailed: "Failed to remove a subscriber. More details:",
+    subscribeFailed: "Failed to register a subscriber!",
+    subscribeFailedDetails: "Failed to register a subscriber! More details:",
+    unsubscribeFailedDetails: "Failed to remove a subscriber! More details:",
     subscriptionSendFailed: "Failed to send weather details. More details:",
     conversationError: "Conversation error:",
   },
